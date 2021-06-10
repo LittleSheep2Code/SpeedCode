@@ -16,7 +16,7 @@ import javax.servlet.http.HttpServletResponse;
 
 @Slf4j
 @RestController
-@RequestMapping("user-tools/authorization/invitation-code")
+@RequestMapping("accounts-utils/activate")
 public class ActivateController {
 
     @Autowired

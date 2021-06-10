@@ -1,18 +1,17 @@
 package SpeedCodeBKD.Controllers.AccountsControllers;
 
+import SpeedCodeBKD.Data.Entites.AccountEntity;
+import SpeedCodeBKD.Data.Service.AccountService;
 import SpeedCodeBKD.Utils.Processor.EmailSender;
 import SpeedCodeBKD.Utils.Processor.ResourceReader;
 import SpeedCodeBKD.Utils.Processor.ResultProcessor;
 import SpeedCodeBKD.Utils.Verification.Authorization.AccessToken;
 import SpeedCodeBKD.Utils.Verification.EmailCode;
 import SpeedCodeBKD.Utils.Verification.EncryptionUtils;
-import SpeedCodeBKD.Data.Entites.AccountEntity;
-import SpeedCodeBKD.Data.Service.AccountService;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.tomcat.jni.Time;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -26,17 +25,15 @@ import java.util.UUID;
 
 @Slf4j
 @RestController
-@RequestMapping("user-tools/authorization")
-public class AuthorizationUser {
+@RequestMapping("accounts-utils/authorization")
+public class AccountController {
 
     @Autowired
     AccountService accountService;
 
     @Autowired
-    EmailSender emailProcessor;
-
-    @Autowired
-    EmailCode acceptCodeUtils;
+    EmailSender EmailProcessor;
+    EmailCode EmailCodeUtils;
 
     @SneakyThrows
     @PostMapping(value = "login", produces = "application/json; charset=UTF-8")
@@ -45,30 +42,31 @@ public class AuthorizationUser {
         AccountEntity target = accountService.getByUsername(username);
 
         // 检查用户名
-        if(target == null) {
+        if (target == null) {
             response.setStatus(201);
             return ResultProcessor.warn_response(ResultProcessor.ReasonCode.wrong_data, "Login");
         }
 
         // 检查是否验证
-        if(accountService.getByUsername(username).getCertificated() == 0) {
+        if (accountService.getByUsername(username).getState() == 0) {
             response.setStatus(201);
             return ResultProcessor.warn_response(ResultProcessor.ReasonCode.permission_insufficient, "Login");
         }
 
         // 验证用户密码
         password = EncryptionUtils.passwordEncryption(password);
-        if(!password.equals(target.getPassword())) {
+        if (!password.equals(target.getPassword())) {
             response.setStatus(201);
             return ResultProcessor.warn_response(ResultProcessor.ReasonCode.wrong_data, "Login");
         }
 
         // 更新 AccessToken
-        String accessToken = new AccessToken(accountService).updateAccessToken(target.getUuid(), 0);
+        String token = new AccessToken(accountService).updateAccessToken(target.getUuid(), 0);
 
         // 返回 Response
         response.setStatus(200);
-        JSONObject result = new JSONObject(); result.put("accessToken", accessToken);
+        JSONObject result = new JSONObject();
+        result.put("access_token", token);
         return ResultProcessor.completed_response(result, "Login");
     }
 
@@ -80,50 +78,51 @@ public class AuthorizationUser {
         accountService.removeOutdatedAccount();
 
         // 检查 EmailCode
-        if(email_code.equals("null")) {
+        if (email_code.equals("null")) {
 
             // 检查参数是否提交齐全
-            if(email.equals("") || password.equals("") || username.equals("")) {
+            if (email.equals("") || password.equals("") || username.equals("")) {
                 response.setStatus(201);
                 return ResultProcessor.warn_response(ResultProcessor.ReasonCode.parameters_error, "Register");
             }
 
             // 检查是否重复
-            if(accountService.getByUsername(username) != null) {
+            if (accountService.getByUsername(username) != null) {
                 response.setStatus(201);
                 return ResultProcessor.warn_response(ResultProcessor.ReasonCode.duplicate_data, "Register");
             }
 
-            if(accountService.getByEmail(email) != null) {
+            if (accountService.getByEmail(email) != null) {
                 response.setStatus(201);
                 return ResultProcessor.warn_response("Duplicate email", "Register");
             }
 
-            String targetAcceptCode = acceptCodeUtils.summon();
-            String targetUuid = UUID.randomUUID().toString().replace("-", "").toUpperCase();
+            String activateCode = EmailCodeUtils.summon();
+            String commitUuid = UUID.randomUUID().toString().replace("-", "").toUpperCase();
 
             // 注册 EmailCode & User
             AccountEntity commitTarget = new AccountEntity();
-            commitTarget.setCertificated(0);
-            commitTarget.setEmail(email);
-            commitTarget.setLevel(0);
-            commitTarget.setPermission(0);
-            commitTarget.setActivateCode(targetAcceptCode);
-            commitTarget.setUsername(username);
-            commitTarget.setRegisterTime(Time.sec(new Date().getTime()));
-            commitTarget.setUuid(targetUuid);
             commitTarget.setPassword(EncryptionUtils.passwordEncryption(password));
+            commitTarget.setActivate_code(activateCode);
+            commitTarget.setCreate_date(new Date());
+            commitTarget.setUsername(username);
+            commitTarget.setUuid(commitUuid);
             accountService.save(commitTarget);
+            commitTarget.setPermission(0);
+            commitTarget.setEmail(email);
+            commitTarget.setState(0);
 
             // 读取 Template 文件
-            String emailCodeTemplate_ln = new JSONObject(ResourceReader.StringReader("static/document/config/email-code.json")).getString("documentation");
-            String emailCodeTemplate = ResourceReader.StringReader(emailCodeTemplate_ln).replace("${EMAIL_CODE}", email_code).replace("${USERNAME}", username);
+            String registerTemplate = ResourceReader.TemplateReader("static/document/config/email-code.json")
+                    .replace("${EMAIL_CODE}", email_code).replace("${USERNAME}", username);
 
-            try { emailProcessor.send(null, true, new String[] { email }, "SpeedCode 注册账号请求", emailCodeTemplate); }
-            catch(Exception e) {
+            try {
+                EmailProcessor.send(null, true, new String[]{email}, "SpeedCode account register request", registerTemplate);
+            } catch (Exception e) {
                 e.printStackTrace();
+
                 response.setStatus(400);
-                accountService.remove(new QueryWrapper<AccountEntity>().eq("uuid", targetUuid));
+                accountService.remove(new QueryWrapper<AccountEntity>().eq("uuid", commitUuid));
                 return ResultProcessor.warn_response(ResultProcessor.ReasonCode.email_error, "Register");
             }
 
@@ -132,23 +131,23 @@ public class AuthorizationUser {
         }
 
         // 检查 Username 是否有效
-        if(username.equals("")) {
+        if (username.equals("")) {
             response.setStatus(201);
             return ResultProcessor.warn_response(ResultProcessor.ReasonCode.undefined, "Register");
         }
 
-        if(accountService.getByUsername(username) == null) {
+        if (accountService.getByUsername(username) == null) {
             response.setStatus(201);
             return ResultProcessor.warn_response(ResultProcessor.ReasonCode.undefined, "Register");
         }
 
         // 检查 EmailCode 是否有效
-        if(accountService.getByActivateCode(email_code) == null) {
+        if (accountService.getByActivateCode(email_code) == null) {
             response.setStatus(201);
             return ResultProcessor.warn_response(ResultProcessor.ReasonCode.wrong_data, "Register");
         }
 
-        if(!accountService.getByActivateCode(email_code).getUsername().equals(username)) {
+        if (!accountService.getByActivateCode(email_code).getUsername().equals(username)) {
             response.setStatus(201);
             return ResultProcessor.warn_response(ResultProcessor.ReasonCode.permission_insufficient, "Register");
         }
@@ -156,8 +155,9 @@ public class AuthorizationUser {
 
         // 提交数据
         AccountEntity commitTarget = new AccountEntity();
-        commitTarget.setCertificated(1);
-        commitTarget.setActivateCode("");
+        commitTarget.setState(1);
+        commitTarget.setActivate_code("");
+
         accountService.update(commitTarget, new UpdateWrapper<AccountEntity>().eq("username", username));
 
         JSONObject object = new JSONObject();

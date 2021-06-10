@@ -6,6 +6,8 @@ import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.Date;
+
 @Data
 @NoArgsConstructor
 @TableName(value = "Executor")
@@ -14,7 +16,7 @@ public class ExecutorEntity {
     @TableId(type = IdType.AUTO)
     private Long id;
 
-    private Long execute_time;
+    private Date execute_time;
 
     private String source_code;
     private String sender;
