@@ -1,0 +1,8 @@
+{
+  "name": "information",
+  "uniqueIdentifier": "about/information",
+  "documentation": "static/document/autoload-documents/about.documentation.html",
+  "releasesDate": "2021年 4月 4日 星期日 23时39分03秒 CST",
+  "releaseVer": "v1.0",
+  "autoload": true
+}

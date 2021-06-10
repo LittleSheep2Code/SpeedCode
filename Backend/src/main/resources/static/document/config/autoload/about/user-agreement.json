@@ -1,0 +1,8 @@
+{
+  "name": "user-agreement",
+  "uniqueIdentifier": "about/user-agreement",
+  "documentation": "static/document/autoload-documents/user-agreement.documentation.html",
+  "releasesDate": "2021年 4月 4日 星期日 23时39分03秒 CST",
+  "releaseVer": "v1.3",
+  "autoload": true
+}
