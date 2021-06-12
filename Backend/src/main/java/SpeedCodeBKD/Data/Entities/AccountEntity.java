@@ -1,7 +1,6 @@
-package SpeedCodeBKD.Data.Entites;
+package SpeedCodeBKD.Data.Entities;
 
 import com.baomidou.mybatisplus.annotation.IdType;
-import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -9,10 +8,8 @@ import com.fasterxml.jackson.databind.ObjectWriter;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.SneakyThrows;
-import org.json.JSONObject;
 
 import java.util.Date;
-import java.util.Objects;
 
 @Data
 @NoArgsConstructor

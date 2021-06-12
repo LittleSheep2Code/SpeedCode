@@ -1,7 +1,7 @@
 package SpeedCodeBKD.Controllers.AccountsControllers;
 
 import SpeedCodeBKD.Utils.Processor.ResultProcessor;
-import SpeedCodeBKD.Data.Entites.AccountEntity;
+import SpeedCodeBKD.Data.Entities.AccountEntity;
 import SpeedCodeBKD.Data.Service.AccountService;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
@@ -46,7 +46,7 @@ public class SearchAccountController {
     @PostMapping(value = "/{uuid}:{mode}", produces = "application/json; charset=UTF-8")
     private String BasicQuery(@PathVariable String uuid, @PathVariable String mode, HttpServletResponse response) {
 
-        AccountEntity result = accountService.getByUuid(uuid);
+        AccountEntity result = accountService.selectByUuid(uuid);
 
         if(mode.equals("list_profile")) {
             if(result == null) {
@@ -78,12 +78,12 @@ public class SearchAccountController {
     @SneakyThrows
     @PostMapping(value = "/advance/{access_token}:{mode}", produces = "application/json; charset=UTF-8")
     private String AdvanceQuery(@PathVariable String access_token, @PathVariable String mode, HttpServletResponse response) {
-        if(accountService.getByAccessToken(access_token) == null) {
+        if(accountService.selectByAccessToken(access_token) == null) {
             response.setStatus(201);
             return ResultProcessor.warn_response(ResultProcessor.ReasonCode.wrong_data, "Search");
         }
 
-        AccountEntity result = accountService.getByAccessToken(access_token);
+        AccountEntity result = accountService.selectByAccessToken(access_token);
         if(mode.equals("list_profile")) {
 
             JSONObject resultObject = new JSONObject();
@@ -102,7 +102,7 @@ public class SearchAccountController {
     @SneakyThrows
     @GetMapping(value = "/username2uuid/{username}", produces = "application/json; charset=UTF-8")
     private String username2uuid(@PathVariable String username, HttpServletResponse response) {
-        AccountEntity result = accountService.getByUsername(username);
+        AccountEntity result = accountService.selectByUsername(username);
 
         if(result == null) {
             response.setStatus(201);

@@ -1,6 +1,6 @@
 package SpeedCodeBKD.Data.Mapper;
 
-import SpeedCodeBKD.Data.Entites.ActivateEntity;
+import SpeedCodeBKD.Data.Entities.ActivateEntity;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Select;

@@ -1,6 +1,6 @@
 package SpeedCodeBKD.Utils.Verification.Authorization;
 
-import SpeedCodeBKD.Data.Entites.AccountEntity;
+import SpeedCodeBKD.Data.Entities.AccountEntity;
 import SpeedCodeBKD.Data.Service.AccountService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -12,6 +12,6 @@ public class AccessTokenUtils {
     AccountService accountService;
 
     public AccountEntity Access2AccountEntity(String access_token) {
-        return accountService.getByAccessToken(access_token);
+        return accountService.selectByAccessToken(access_token);
     }
 }

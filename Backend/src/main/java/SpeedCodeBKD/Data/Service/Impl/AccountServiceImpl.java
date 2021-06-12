@@ -2,7 +2,7 @@ package SpeedCodeBKD.Data.Service.Impl;
 
 import SpeedCodeBKD.Utils.Processor.ResourceReader;
 import SpeedCodeBKD.Utils.Processor.EmailSender;
-import SpeedCodeBKD.Data.Entites.AccountEntity;
+import SpeedCodeBKD.Data.Entities.AccountEntity;
 import SpeedCodeBKD.Data.Mapper.AccountMapper;
 import SpeedCodeBKD.Data.Service.AccountService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
@@ -18,12 +18,12 @@ public class AccountServiceImpl extends ServiceImpl<AccountMapper, AccountEntity
     @Autowired
     EmailSender emailProcessor;
 
-    public AccountEntity getByActivateCode(String activateCode) { return accountMapper.selectByActivateCode(activateCode); }
-    public AccountEntity getByAccessToken(String accessToken) { return accountMapper.selectByAccessToken(accessToken); }
+    public AccountEntity selectByActivateCode(String activateCode) { return accountMapper.selectByActivateCode(activateCode); }
+    public AccountEntity selectByAccessToken(String accessToken) { return accountMapper.selectByAccessToken(accessToken); }
 
-    public AccountEntity getByUsername(String username) { return accountMapper.selectByUsername(username); }
-    public AccountEntity getByEmail(String email) { return accountMapper.selectByEmail(email); }
-    public AccountEntity getByUuid(String uuid) { return accountMapper.selectByUuid(uuid); }
+    public AccountEntity selectByUsername(String username) { return accountMapper.selectByUsername(username); }
+    public AccountEntity selectByEmail(String email) { return accountMapper.selectByEmail(email); }
+    public AccountEntity selectByUuid(String uuid) { return accountMapper.selectByUuid(uuid); }
 
     public void removeOutdatedAccount() {
         String basicTemplate = ResourceReader.TemplateReader("static/document/config/delete-user-reason");

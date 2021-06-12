@@ -1,14 +1,14 @@
 package SpeedCodeBKD.Data.Service;
 
-import SpeedCodeBKD.Data.Entites.AccountEntity;
+import SpeedCodeBKD.Data.Entities.AccountEntity;
 import com.baomidou.mybatisplus.extension.service.IService;
 
 public interface AccountService extends IService<AccountEntity> {
 
-    AccountEntity getByAccessToken(String accessToken);
-    AccountEntity getByUuid(String uuid);
-    AccountEntity getByUsername(String username);
-    AccountEntity getByEmail(String email);
-    AccountEntity getByActivateCode(String activateCode);
+    AccountEntity selectByAccessToken(String accessToken);
+    AccountEntity selectByUuid(String uuid);
+    AccountEntity selectByUsername(String username);
+    AccountEntity selectByEmail(String email);
+    AccountEntity selectByActivateCode(String activateCode);
     void removeOutdatedAccount();
 }

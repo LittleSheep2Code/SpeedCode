@@ -1,6 +1,6 @@
 package SpeedCodeBKD.Utils.Verification.Authorization;
 
-import SpeedCodeBKD.Data.Entites.AccountEntity;
+import SpeedCodeBKD.Data.Entities.AccountEntity;
 import SpeedCodeBKD.Data.Service.AccountService;
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.JWTVerifier;
@@ -25,13 +25,13 @@ public class AccessToken {
 
     @SneakyThrows
     public String updateAccessToken(@NotNull String account_uuid, @Nullable Integer customize_available_time) {
-        AccountEntity account = accountService.getByUuid(account_uuid);
+        AccountEntity account = accountService.selectByUuid(account_uuid);
 
         // 验证
         boolean withoutUpdate = true;
 
         JWTVerifier verifier = JWT.require(Algorithm.HMAC512(account.getPassword())).build();
-        try { verifier.verify(account.getAccessToken()); }
+        try { verifier.verify(account.getAccess_token()); }
         catch(JWTVerificationException e) { withoutUpdate = false; }
 
         log.info("(Token Engine): Update accessToken for  " + account_uuid);
@@ -39,7 +39,7 @@ public class AccessToken {
         String availableToken = "";
 
         if(withoutUpdate) {
-            availableToken = account.getAccessToken();
+            availableToken = account.getAccess_token();
         }
 
         // 如果需要更新
@@ -60,7 +60,7 @@ public class AccessToken {
             log.info(String.format("(Token Engine): Completed create JWT Token. Issued at: %s; Expires at: %s;", availableTime, expirationTime));
 
             // 更新至数据库
-            account.setAccessToken(availableToken);                                                         // 写入 Database
+            account.setAccess_token(availableToken);                                                              // 写入 Database
             accountService.update(account, new UpdateWrapper<AccountEntity>().eq("uuid", account_uuid));  // 推送提交
 
             log.info("(Token Engine): Completed update accessToken");
@@ -70,7 +70,7 @@ public class AccessToken {
     }
 
     public boolean isValid(@NotNull String account_uuid, @NotNull String access_token) {
-        AccountEntity account = accountService.getByUuid(account_uuid);
+        AccountEntity account = accountService.selectByUuid(account_uuid);
 
         JWTVerifier verifier = JWT.require(Algorithm.HMAC512(account.getPassword())).build();
         try { verifier.verify(access_token); }

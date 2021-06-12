@@ -1,7 +1,6 @@
 package SpeedCodeBKD.Data.Service.Impl;
 
-import SpeedCodeBKD.Data.Entites.ExecutorEntity;
-import SpeedCodeBKD.Data.Mapper.ActivateMapper;
+import SpeedCodeBKD.Data.Entities.ExecutorEntity;
 import SpeedCodeBKD.Data.Mapper.ExecutorMapper;
 import SpeedCodeBKD.Data.Service.ExecutorService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;

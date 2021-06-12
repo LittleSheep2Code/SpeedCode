@@ -1,6 +1,6 @@
 package SpeedCodeBKD.Data.Service.Impl;
 
-import SpeedCodeBKD.Data.Entites.ActivateEntity;
+import SpeedCodeBKD.Data.Entities.ActivateEntity;
 import SpeedCodeBKD.Data.Mapper.ActivateMapper;
 import SpeedCodeBKD.Data.Service.ActivateService;
 import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;

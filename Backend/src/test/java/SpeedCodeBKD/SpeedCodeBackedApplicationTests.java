@@ -30,28 +30,11 @@ class SpeedCodeBackedApplicationTests {
     CommandService commandService;
 
     @Autowired
-    SSHCommandService sshCommandService;
-
-    @Autowired
     CompileUtilsService compileUtilsService;
-	
-    @Test
-    void emailTest() {
-        log.info(" * Prepare Email System... ");
-        log.info("================ SENDING STARTED EMAIL TO ADMIN ================");
-        log.info(" * Send Server Booted Email...");
-         emailProcessor.sendEmail(
-                 "cadenjiang@outlook.com",
-                 "SpeedCode Server Completed Start",
-                 "SpeedCode Server Completed Start without error"
-         );
-        log.info(" * Completed");
-        log.info("================================================================");
-    }
 
-    @SneakyThrows
-    @Disabled
     @Test
+    @Disabled
+    @SneakyThrows
     void compileTest() {
         // Compile file
         log.info(" * Getting start compile!");
@@ -73,8 +56,9 @@ class SpeedCodeBackedApplicationTests {
         log.info(s);
     }
 
-    @SneakyThrows
     @Test
+    @Disabled
+    @SneakyThrows
     void compileUtilsServiceTest() {
         // Compile file
         log.info(" * Getting start running!");
@@ -82,15 +66,5 @@ class SpeedCodeBackedApplicationTests {
         log.info(" * Result stdout: " + result.getString("stdout"));
         log.info(" * Result stderr: " + result.getString("stderr"));
         log.info(" * Result compileError: " + result.getString("compile_output"));
-    }
-
-    @SneakyThrows
-    @Test
-    void SSHTest() {
-        log.info(" * Starting execute command to Server!");
-        sshCommandService.initConnection();
-        String result = IOReader.read(sshCommandService.executeScript("whoami", ""));
-        log.info(" * Completed!");
-        log.info(" * Execute Result(`whoami`): " + result);
     }
 }

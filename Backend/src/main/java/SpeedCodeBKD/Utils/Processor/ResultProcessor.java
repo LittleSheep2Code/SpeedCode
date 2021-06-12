@@ -79,6 +79,7 @@ public class ResultProcessor {
     // ReasonCode enum
     public enum ReasonCode {
 
+        permissions_superfluous("PERSPR"),
         permission_insufficient("PERNDF"),
         parameters_error("ARVERR"),
         duplicate_data("DATDUP"),

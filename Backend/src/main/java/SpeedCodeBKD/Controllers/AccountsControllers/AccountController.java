@@ -1,6 +1,6 @@
 package SpeedCodeBKD.Controllers.AccountsControllers;
 
-import SpeedCodeBKD.Data.Entites.AccountEntity;
+import SpeedCodeBKD.Data.Entities.AccountEntity;
 import SpeedCodeBKD.Data.Service.AccountService;
 import SpeedCodeBKD.Utils.Processor.EmailSender;
 import SpeedCodeBKD.Utils.Processor.ResourceReader;
@@ -39,7 +39,7 @@ public class AccountController {
     @PostMapping(value = "login", produces = "application/json; charset=UTF-8")
     private String loginRequest(String username, String password, HttpServletResponse response) {
         accountService.removeOutdatedAccount();
-        AccountEntity target = accountService.getByUsername(username);
+        AccountEntity target = accountService.selectByUsername(username);
 
         // 检查用户名
         if (target == null) {
@@ -48,7 +48,7 @@ public class AccountController {
         }
 
         // 检查是否验证
-        if (accountService.getByUsername(username).getState() == 0) {
+        if (accountService.selectByUsername(username).getState() == 0) {
             response.setStatus(201);
             return ResultProcessor.warn_response(ResultProcessor.ReasonCode.permission_insufficient, "Login");
         }
@@ -87,12 +87,12 @@ public class AccountController {
             }
 
             // 检查是否重复
-            if (accountService.getByUsername(username) != null) {
+            if (accountService.selectByUsername(username) != null) {
                 response.setStatus(201);
                 return ResultProcessor.warn_response(ResultProcessor.ReasonCode.duplicate_data, "Register");
             }
 
-            if (accountService.getByEmail(email) != null) {
+            if (accountService.selectByEmail(email) != null) {
                 response.setStatus(201);
                 return ResultProcessor.warn_response("Duplicate email", "Register");
             }
@@ -136,18 +136,18 @@ public class AccountController {
             return ResultProcessor.warn_response(ResultProcessor.ReasonCode.undefined, "Register");
         }
 
-        if (accountService.getByUsername(username) == null) {
+        if (accountService.selectByUsername(username) == null) {
             response.setStatus(201);
             return ResultProcessor.warn_response(ResultProcessor.ReasonCode.undefined, "Register");
         }
 
         // 检查 EmailCode 是否有效
-        if (accountService.getByActivateCode(email_code) == null) {
+        if (accountService.selectByActivateCode(email_code) == null) {
             response.setStatus(201);
             return ResultProcessor.warn_response(ResultProcessor.ReasonCode.wrong_data, "Register");
         }
 
-        if (!accountService.getByActivateCode(email_code).getUsername().equals(username)) {
+        if (!accountService.selectByActivateCode(email_code).getUsername().equals(username)) {
             response.setStatus(201);
             return ResultProcessor.warn_response(ResultProcessor.ReasonCode.permission_insufficient, "Register");
         }

@@ -19,7 +19,7 @@ public class EmailCode {
     public String summon() {
         while(true) {
             String code = UUID.randomUUID().toString().replace("-", "").toUpperCase().substring(0, 6);
-            if(accountService.getByActivateCode(code) == null) return code;
+            if(accountService.selectByActivateCode(code) == null) return code;
         }
     }
 }

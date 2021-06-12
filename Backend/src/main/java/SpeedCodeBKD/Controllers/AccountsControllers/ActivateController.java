@@ -1,7 +1,8 @@
 package SpeedCodeBKD.Controllers.AccountsControllers;
 
-import SpeedCodeBKD.Data.Entites.AccountEntity;
-import SpeedCodeBKD.Data.Entites.ActivateEntity;
+import SpeedCodeBKD.Common.Annotation.AccessLevel;
+import SpeedCodeBKD.Data.Entities.AccountEntity;
+import SpeedCodeBKD.Data.Entities.ActivateEntity;
 import SpeedCodeBKD.Data.Service.AccountService;
 import SpeedCodeBKD.Data.Service.ActivateService;
 import SpeedCodeBKD.Utils.Processor.ResultProcessor;
@@ -21,11 +22,10 @@ public class ActivateController {
 
     @Autowired
     ActivateService activateService;
-
-    @Autowired
     AccountService accountService;
 
     @SneakyThrows
+    @AccessLevel(0)
     @PostMapping(value = "create/{adder}/{source}", produces = "application/json; charset=UTF-8")
     private String activateCodeBuilder(@PathVariable String source, @PathVariable String adder, HttpServletResponse response) {
 
@@ -37,18 +37,18 @@ public class ActivateController {
         }
 
         // $(1) 验证 Owner
-        if (accountService.getByUuid(adder) == null) {
+        if (accountService.selectByUuid(adder) == null) {
             response.setStatus(201);
             return ResultProcessor.warn_response(ResultProcessor.ReasonCode.undefined, "Create-ActivateEntity");
         }
 
         // $(2) 验证 Owner 邮箱与等级
-        if (accountService.getByUuid(adder).getState() == 0) {
+        if (accountService.selectByUuid(adder).getState() == 0) {
             response.setStatus(201);
             return ResultProcessor.warn_response(ResultProcessor.ReasonCode.permission_insufficient, "Create-ActivateEntity");
         }
 
-        if (accountService.getByUuid(adder).getPermission() < 100) {
+        if (accountService.selectByUuid(adder).getPermission() < 100) {
             response.setStatus(201);
             return ResultProcessor.warn_response(ResultProcessor.ReasonCode.permission_insufficient, "Create-ActivateEntity");
         }
@@ -74,7 +74,8 @@ public class ActivateController {
     }
 
     @SneakyThrows
-    @GetMapping(value = "use/{source}:{account_uuid}", produces = "application/json; charset=UTF-8")
+    @AccessLevel(value = 0, max = 1, ignore_admins = true)
+    @GetMapping(value = "activate/{source}:{account_uuid}", produces = "application/json; charset=UTF-8")
     private String activateAccount(@PathVariable String source, @PathVariable String account_uuid, HttpServletResponse response) {
 
         // 验证提交数据
@@ -85,7 +86,7 @@ public class ActivateController {
         }
 
         // $(1) 验证 使用目标
-        if (accountService.getByUuid(account_uuid) == null) {
+        if (accountService.selectByUuid(account_uuid) == null) {
             response.setStatus(201);
             return ResultProcessor.warn_response(ResultProcessor.ReasonCode.undefined, "Use-ActivateEntity");
         }
@@ -96,13 +97,13 @@ public class ActivateController {
             return ResultProcessor.warn_response(ResultProcessor.ReasonCode.permission_insufficient, "Use-ActivateEntity");
         }
 
-        if (accountService.getByUuid(account_uuid).getState() == 0) {
+        if (accountService.selectByUuid(account_uuid).getState() == 0) {
             response.setStatus(201);
             return ResultProcessor.warn_response(ResultProcessor.ReasonCode.permission_insufficient, "Use-ActivateEntity");
         }
 
         // 提交数据
-        AccountEntity updateAccount = accountService.getByUuid(account_uuid);
+        AccountEntity updateAccount = accountService.selectByUuid(account_uuid);
         updateAccount.setState(2); accountService.saveOrUpdate(updateAccount);
 
         ActivateEntity updateActivate = activateService.selectBySource(source);

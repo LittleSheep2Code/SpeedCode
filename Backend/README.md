@@ -4,9 +4,6 @@
 
 `SpeedCode-Server` 是 `SpeedCode-Website` 和 `SpeedCode-Client` 的前置服务器项目
 
-项目计划在 2021. 7. 2 开源
-
-
 
 ## Getting Start
 
@@ -18,9 +15,33 @@
    - 环境要求：
      - JDK 8+
      - 1MB+ Network
+     - Docker
+     - [Judge0](https://github.com/judge0/judge0)
+
 
 1. 下载项目 Jar
-2. 运行服务器 Jar
+   
+2. 安装 Judge0
+```shell
+# 请确保安装了 docker 与 docker-compose
+
+# 下载 Judge0
+wget https://github.com/judge0/judge0/releases/download/v1.13.0/judge0-v1.13.0.zip
+unzip judge0-v1.13.0.zip
+
+# 安装/启动 Judge0
+cd judge0-v1.13.0
+docker-compose up -d db redis
+sleep 10s
+docker-compose up -d
+sleep 5s
+
+# 如果 pull judge0-server 时发生错误，可以使用一下语句
+# 之后再执行 安装/启动 Judge0 命令
+# docker pull judge0/judge0
+```
+
+3. 运行服务器 Jar
 
 ```shell
 # git clone https://gitee.com/LittleSheeper/SpeedCode-Backend.git
@@ -35,7 +56,7 @@ java -jar <文件名>
 
    
 
-3. 更换客户端配置
+4. 更换客户端配置
    - 详见子项目文档
    - 重新打包并运行
 
@@ -43,6 +64,7 @@ Getting Start 完成 ✅
 
 
 ## 标准
+
 在介绍各种功能之前，我有必要说一说代码提交标准。
 
 如果您想给该项目提交新功能的话，请务必耐心读完本章！
@@ -52,43 +74,48 @@ Getting Start 完成 ✅
 ```java
 package SpeedCodeBKD.Utils.Processor;
 
-import ...;
-
-        ...
+// ...
 
 public class EmailSender {
-
+    
     @Autowried
     private static int ValueForExample = 200;
 
     public void send_email(Boolean is_rendered) {
         String contentForSend;
-        ...
+        
+        // ...
     }
 }
 ```
 
 你发现了吗?
-1. 参数与函数需采用下划线的方式命名
-2. 类名需要以大驼峰的方式命名
-3. 常量需要以大驼峰大方式命名
-4. 变量需要小驼峰的方式命名
+ 1. 参数与函数需采用下划线的方式命名
+ 2. 类名需要以大驼峰的方式命名
+ 3. 常量需要以大驼峰大方式命名
+ 4. 变量需要小驼峰的方式命名
 
-## Api 文档
+## 文档
 
-### 用户授权类
+### 权限划分
+
+| 等级       | 名称                                       |  描述 |
+| ----------| ---- | ------------------------------------------ |
+|-256       | 任何人 | 任何人的权限，表示此 Api 可可以被任何人访问，包括封禁的人 |
+
+#### 用户授权类
 
 Prefix: `/user-tools/authorization/`
 
-#### 创建用户
+##### 创建用户
 
-##### 描述
+###### 描述
 
 Full Url: `/user-tools/authorization/register`
 
 Url: `/register`
 
-##### 参数
+###### 参数
 
 需要 Query 参数
 
@@ -101,7 +128,7 @@ Url: `/register`
 
 **提示：**`acceptCode` 虽然是选填参数，但要完成注册需要填写
 
-##### 请求例
+###### 请求例
 
 ```http
 # 请求邮箱验证码
@@ -113,7 +140,7 @@ POST localhost:20020/user-tools/authorization/register/?username=xxx&email=xxx@x
 POST localhost:20020/user-tools/authorization/register/?username=xxx&email=xxx@xxx.com&password=xxx&acceptCode=000000
 ```
 
-##### 补充
+###### 补充
 
 此方法在第一次请求的时候会创建一个缓冲用户，若不完成邮箱验证，会在 2 小时后自动销毁
 
@@ -145,17 +172,13 @@ POST localhost:20020/user-tools/authorization/register/?username=xxx&email=xxx@x
 1. `result` 或 `warnReason` 或 `errReason` (`String` )：处理后的结果或错误原因
 2. `operating` (`String`)：操作的名字
 3. `status`(`String`)：状态(见 [状态](#Status))
-4. `statusCode`(`Int`)：状态码(见 [状态码](#状态码))
+4. `status_code`(`Int`)：状态码(见 [状态码](#状态码))
 
 #### 请求结果事例
 
 通常我们会使用 `JSONObject`  或  `dict`  来处理 **请求返回**
 
 ```json
-============== GET 请求 ==============
-/documentations/user-agreement
-============== GET 请求 ==============
-
 {
     "result": {
         "date": "2021年 2月13日 星期六 13时54分14秒 CST",
@@ -167,10 +190,4 @@ POST localhost:20020/user-tools/authorization/register/?username=xxx&email=xxx@x
     "statusCode": 200
 }
 ```
-
-这个是个很工整的请求啊！
-
-`result` 是一个 `JSONObject`
-
-其他直接使用 `.put("*", *)` 即可
 

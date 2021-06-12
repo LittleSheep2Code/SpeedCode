@@ -1,12 +1,11 @@
 package SpeedCodeBKD.Controllers;
 
-import SpeedCodeBKD.Data.Entites.ExecutorEntity;
+import SpeedCodeBKD.Data.Entities.ExecutorEntity;
 import SpeedCodeBKD.Data.Service.AccountService;
 import SpeedCodeBKD.Data.Service.ExecutorService;
 import SpeedCodeBKD.Services.CompileUtilsService;
 import SpeedCodeBKD.Utils.Processor.ResultProcessor;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.tomcat.jni.Time;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -16,7 +15,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletResponse;
 import java.util.Date;
-import java.util.UUID;
 
 @Slf4j
 @RestController
@@ -76,11 +74,11 @@ public class CodeRunnerController {
 
         // 校验用户身份
         // State0 | 普通用户
-        if (accountService.getByUuid(uuid) == null) {
+        if (accountService.selectByUuid(uuid) == null) {
             return ResultProcessor.warn_response(ResultProcessor.ReasonCode.undefined, "Execute");
         }
 
-        if (accountService.getByUuid(uuid).getState() == 0) {
+        if (accountService.selectByUuid(uuid).getState() == 0) {
             return ResultProcessor.warn_response(ResultProcessor.ReasonCode.undefined, "Execute");
         }
 

@@ -1,6 +1,6 @@
 package SpeedCodeBKD.Data.Service;
 
-import SpeedCodeBKD.Data.Entites.ActivateEntity;
+import SpeedCodeBKD.Data.Entities.ActivateEntity;
 import com.baomidou.mybatisplus.extension.service.IService;
 
 import java.util.List;
