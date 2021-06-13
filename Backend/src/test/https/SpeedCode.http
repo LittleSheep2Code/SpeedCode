@@ -1,4 +1,0 @@
-# POST localhost:20020/user-tools/query/advance/e7e46926bb4dc3fe8892eda9b320e454d418ee28a69e3a3e0aaf851d4634cfc15dd63090368eee13c52bb548641b7abaabf1e24fb48a4c64b97f5692ff1feec2-a33c4d494696fd4a7c298fd63ef55bd2-1616919090384:all
-
-POST localhost:20020/code-utils/code-runner/execute?source=print('house NB')&language=PYTHON_3&uuid=3850E7C887924B4EA5EAC19B0B1FD3EC
-
