@@ -1,7 +1,9 @@
-from common import singleton
-
-@singleton
 class global_values(object):
+
+    def __new__(cls):
+        if not hasattr(cls, 'instance'):
+            cls.instance = super().__new__(cls)
+        return cls.instance
 
     values = {}
 

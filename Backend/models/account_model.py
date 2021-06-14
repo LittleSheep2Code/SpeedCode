@@ -10,6 +10,9 @@ class account(database.Model):
     username = database.Column(database.String)
     password = database.Column(database.String)
 
+    access_token = database.Column(database.String)
+    mail_access_code = database.Column(database.String)
+
     destroy_date = database.Column(database.Date)
     create_date = database.Column(database.Date)
 

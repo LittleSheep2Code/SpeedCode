@@ -1,3 +1,4 @@
+import datetime
 import functools
 
 import flask
@@ -10,7 +11,7 @@ def access_require(permission_require=-256, permission_maximum=None, state_requi
         @functools.wraps(func)
         def wrapper(*args, **kwargs):
 
-            print(f"(Authorization): Catch a request, processing... ip: {flask.request.remote_addr})")
+            print(f"[{datetime.datetime.now()}] (Authorization): Catch a request, processing... ip: {flask.request.remote_addr}")
 
             # 获取 AccessToken
             access_token = flask.request.headers.get("access_token")
