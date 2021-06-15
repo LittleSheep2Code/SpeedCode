@@ -3,13 +3,13 @@ import time
 
 import jwt
 
-from models.account_model import account
+from models.account_model import Account
 
-def summon_new_access_token(instance: account):
+def summon_new_access_token(instance: Account):
 
     # Summon new access token
-    payload = dict(dict(account.__dict__) + {"exp": time.time() + 86400})
-    access = jwt.encode(payload, account.password, "HS256")
+    payload = dict(instance.__dict__ + {"exp": time.time() + 86400})
+    access = jwt.encode(payload, instance.password, "HS256")
 
     # Commit
     instance.update({ "access_token": access })
@@ -30,7 +30,7 @@ def verify_access_token(access: str, uuid: str=None):
 
     # Access token is right
     finally:
-        if (uuid is None or data.get("uuid") == uuid) and account.query.filter_by(access_token=access).first() is not None:
+        if (uuid is None or data.get("uuid") == uuid) and Account.query.filter_by(access_token=access).first() is not None:
             return True
 
         else:

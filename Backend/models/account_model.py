@@ -1,8 +1,6 @@
-from common.global_value_manage import global_values
+from models.connection_factory import database
 
-database = global_values().get("database")
-
-class account(database.Model):
+class Account(database.Model):
     __tablename__ = "Account"
     id = database.Column(database.Integer, primary_key=True, autoincrement=True)
     uuid = database.Column(database.String)
@@ -13,8 +11,8 @@ class account(database.Model):
     access_token = database.Column(database.String)
     mail_access_code = database.Column(database.String)
 
-    destroy_date = database.Column(database.Date)
-    create_date = database.Column(database.Date)
+    destroy_date = database.Column(database.DateTime)
+    create_date = database.Column(database.DateTime)
 
     permission = database.Column(database.Integer)
     state = database.Column(database.Integer)

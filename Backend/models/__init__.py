@@ -1,3 +1,4 @@
-from models.account_model import account
-from models.execute_model import execute
-from models.activate_model import activate
+from models.account_model import Account
+from models.execute_model import Execute
+from models.activate_model import Activate
+

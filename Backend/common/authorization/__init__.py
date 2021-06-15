@@ -3,7 +3,7 @@ import functools
 
 import flask
 
-from models.account_model import account
+from models.account_model import Account
 
 def access_require(permission_require=-256, permission_maximum=None, state_require=0, state_maximum=None, admin_ignore=False):
     def decorator(func):
@@ -27,7 +27,7 @@ def access_require(permission_require=-256, permission_maximum=None, state_requi
                 }, 400
 
             # 获取用户实例
-            entity = account(account.query.filter_by(access_token=access_token).first())
+            entity = Account(Account.query.filter_by(access_token=access_token).first())
             if entity is None:
                 return {
                     "status": "connection refused",

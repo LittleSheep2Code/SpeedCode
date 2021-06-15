@@ -1,11 +1,16 @@
 from controllers.connection_checker import connection_checker
 from controllers.system_console import console
 
+from controllers.accounts import *
+
 class controller_manager:
 
     controllers = [
         connection_checker,
-        console
+        console,
+
+        account_add_delete,
+        high_authorization
     ]
 
     def __init__(self, application_instance):

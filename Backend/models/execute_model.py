@@ -1,8 +1,6 @@
-from common.global_value_manage import global_values
+from models.connection_factory import database
 
-database = global_values().get("database")
-
-class execute(database.Model):
+class Execute(database.Model):
     __tablename__ = "Execute"
     id = database.Column(database.Integer, primary_key=True, autoincrement=True)
     stdin = database.Column(database.String)
@@ -10,4 +8,4 @@ class execute(database.Model):
     sender = database.Column(database.String)
     source_code = database.Column(database.String)
 
-    create_date = database.Column(database.Date)
+    create_date = database.Column(database.DateTime)

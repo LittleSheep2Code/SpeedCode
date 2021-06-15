@@ -1,8 +1,7 @@
 from flask import Blueprint, request
 
-from common.global_value_manage import global_values
+from models.connection_factory import database
 
-database = global_values().get("database")
 console = Blueprint("console", __name__, url_prefix="/console")
 
 ### ACCESS CONFIGURE ### DANGER ### ACCESS CONFIGURE ###
