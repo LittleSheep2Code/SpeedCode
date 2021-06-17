@@ -13,7 +13,7 @@ def summon_email_authorization_code(uuid: str):
 
     entity = Account.query.filter_by(uuid=uuid).first()
     if entity is not None:
-        entity.email_access_code = email_code
+        Account.query.filter_by(uuid=uuid).update({"mail_access_code": email_code})
 
     return email_code
 
@@ -28,7 +28,7 @@ def verify_email_authorization_code(uuid: str, email_code: str):
 @high_authorization.route("/high-authorization")
 @access_require()
 def authorization():
-    entity = Account(Account.query.filter_by(access_token=request.headers.get("access_token")).first())
+    entity = Account.query.filter_by(access_token=request.headers.get("access_token")).first()
 
     send_email(render_template("mail/register-email-code.html").replace("${EMAIL_CODE}", summon_email_authorization_code(entity.uuid)).replace("${USERNAME}", entity.username),
                entity.email,

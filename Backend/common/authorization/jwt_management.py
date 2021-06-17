@@ -3,19 +3,18 @@ import time
 
 import jwt
 
-from models.model_utils import utils
 from models.account_model import Account
 
 def summon_new_access_token(instance: Account):
 
     # Summon new access token
     payload = dict(exp=time.time() + 86400)
-    payload.update(utils.object_as_dict(instance))
+    payload.update({"uuid": instance.uuid, "username": instance.username})
 
     access = jwt.encode(payload, instance.password, "HS256")
 
     # Commit
-    instance.update({ "access_token": access })
+    Account.query.filter_by(uuid=instance.uuid).update({ "access_token": access })
 
     # Return
     return access
@@ -33,7 +32,12 @@ def verify_access_token(access: str, uuid: str=None):
 
     # Access token is right
     finally:
-        if (uuid is None or data.get("uuid") == uuid) and Account.query.filter_by(access_token=access).first() is not None:
+        if (uuid is None or data.get("uuid") == uuid) and Account.query.filter_by(uuid=data.get("uuid")).first() is not None:
+            entity = Account.query.filter_by(uuid=data.get("uuid"))
+
+            if entity.access_token != access:
+                return False
+
             return True
 
         else:
