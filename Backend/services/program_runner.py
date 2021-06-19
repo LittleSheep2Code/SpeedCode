@@ -1,9 +1,9 @@
+from requests import post, get
 from datetime import datetime
 from enum import Enum
-from requests import post
 
-from models import Execute
 from enctryption_config import JUDGE0_API
+from models import Execute
 from models.connection_factory import database
 
 
@@ -61,7 +61,8 @@ class program_runner(object):
             return None
 
         # Query result
-        result = program_runner.select_submission(response.json()["token"])
+        result_json = response.json()
+        result = program_runner.select_submission(result_json["token"])
 
         # Add history
         entity = Execute(stdin=stdin, stdout=result["stdout"], sender=sender, source_code=source, create_date=datetime.now())
@@ -78,7 +79,7 @@ class program_runner(object):
     @staticmethod
     def select_submission(mission_id):
 
-        response = post(JUDGE0_API + "/submissions/" + mission_id)
+        response = get(JUDGE0_API + "/submissions/" + mission_id)
         response_json = response.json()
 
         if response_json["status"]["id"] != 3:
