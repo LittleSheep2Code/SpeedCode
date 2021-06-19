@@ -5,7 +5,7 @@ class scheduler_config(object):
             "id": "database_model_cleaner",
             "func": "scheduler.model_tasks:model_cleaner",
             "trigger": "interval",
-            "seconds": 10
+            "seconds": 3
         }
     ]
 

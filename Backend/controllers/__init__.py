@@ -10,7 +10,8 @@ class controller_manager:
         console,
 
         account_add_delete,
-        high_authorization
+        high_authorization,
+        activate_utils
     ]
 
     def __init__(self, application_instance):

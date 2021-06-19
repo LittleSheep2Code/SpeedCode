@@ -8,4 +8,4 @@ class Query(BaseQuery):
 
         return list(map(lambda row: dict(zip(columns, row)), self.all()))
 
-database: SQLAlchemy = SQLAlchemy(session_options={ "autocommit": True }, query_class=Query)
+database: SQLAlchemy = SQLAlchemy(query_class=Query)

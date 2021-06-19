@@ -27,7 +27,7 @@ def access_require(permission_require=-256, permission_maximum=None, state_requi
                 }, 400
 
             # 获取用户实例
-            entity = Account(Account.query.filter_by(access_token=access_token).first())
+            entity = Account.query.filter_by(access_token=access_token).first()
             if entity is None:
                 return {
                     "status": "connection refused",
@@ -36,8 +36,8 @@ def access_require(permission_require=-256, permission_maximum=None, state_requi
                     "reason_code": "UNDFID"
                 }, 400
 
-            if entity.state >= state_require and (state_maximum is not None or entity.state < state_maximum):
-                if entity.permission >= permission_require and (permission_maximum is not None or (admin_ignore and entity.permission >= 155) or (not admin_ignore and entity.permission > permission_maximum)):
+            if entity.state >= state_require and (state_maximum is None or entity.state < state_maximum):
+                if entity.permission >= permission_require and (permission_maximum is None or (admin_ignore and entity.permission >= 155) or (not admin_ignore and entity.permission > permission_maximum)):
 
                     # 允许访问
                     return func(*args, **kwargs)
@@ -45,7 +45,7 @@ def access_require(permission_require=-256, permission_maximum=None, state_requi
 
             return {
                "status": "connection refused",
-               "reason": "permission denied",
+               "reason": "permission denied or exceed the maximum",
                "status_code": "CONREF",
                "reason_code": "PERDID"
             }, 400

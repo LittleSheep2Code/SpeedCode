@@ -4,13 +4,12 @@ from uuid import uuid1
 
 from flask import Blueprint, request, render_template
 
-from common.email_sender import send_email
-from models.connection_factory import database
 from common.authorization.jwt_management import *
+from common.email_sender import send_email
 from controllers.accounts.high_permission_authization import summon_email_authorization_code
+from models.connection_factory import database
 
 account_add_delete = Blueprint("account_add_delete", __name__, url_prefix="/account")
-
 
 @account_add_delete.post("/sign-in")
 def sign_in():
@@ -85,7 +84,7 @@ def register():
             return {
                 "status": "request denied",
                 "status_code": "REQDID",
-                "reason": "Illegal username, please use letters, number and underline characters",
+                "reason": "illegal username, please use letters, number and underline characters",
                 "reason_code": "WRODAT-NAME"
             }
 
@@ -93,7 +92,7 @@ def register():
             return {
                 "status": "request denied",
                 "status_code": "REQDID",
-                "reason": "Illegal email, please check your email",
+                "reason": "illegal email, please check your email",
                 "reason_code": "WRODAT-NAME"
             }
 
@@ -126,8 +125,8 @@ def register():
 
         # 提交至数据库
         database.session.add(entity)
+        database.session.commit()
 
-        # summon_email_authorization_code(entity.uuid)
         send_email(render_template("mail/register-email-code.html").replace("${EMAIL_CODE}", summon_email_authorization_code(entity.uuid)).replace("${USERNAME}", username),
                    email,
                    "SpeedCode access request code")
@@ -151,6 +150,7 @@ def register():
         if entity.mail_access_code == email_code:
             Account.query.filter_by(username=username) \
                 .update({"state": 0, "destroy_date": datetime.datetime.now() + datetime.timedelta(days=30), "mail_access_code": None})
+            database.session.commit()
 
             return {
                 "status": "completed",
