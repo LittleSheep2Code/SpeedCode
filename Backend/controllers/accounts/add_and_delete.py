@@ -4,6 +4,8 @@ from uuid import uuid1
 
 from flask import Blueprint, request, render_template
 
+from models.model_utils import *
+from common.authorization import access_require
 from common.authorization.jwt_management import *
 from common.email_sender import send_email
 from controllers.accounts.high_permission_authization import summon_email_authorization_code
@@ -160,4 +162,75 @@ def register():
         return {
             "status": "please verity your data",
             "status_code": "WRODAT",
+        }
+
+@account_add_delete.get("/detail")
+def get_account_detail():
+
+    objective = request.args.get("where")
+
+    if request.headers.get("access_token") is not None \
+        and Account.query.filter_by(access_token=request.headers.get("access_token")).first() is not None \
+        and objective is None:
+
+        entity = Account.query.filter_by(access_token=request.headers.get("access_token")).first()
+
+        if entity.state <= 0:
+            return {
+                "status": "completed",
+                "information": {
+                    "access_token": entity.access_token,
+                    "destroy_date": entity.destroy_date,
+                    "create_date": entity.create_date,
+                    "permission": entity.permission,
+                    "username": entity.username,
+                    "password": entity.password,
+                    "email": entity.email,
+                    "state": entity.state,
+                    "uuid": entity.uuid,
+                },
+
+                "status_code": "PASSED"
+            }
+
+        else:
+            return {
+                "status": "completed",
+                "information": {
+                    "access_token": entity.access_token,
+                    "create_date": entity.create_date,
+                    "permission": entity.permission,
+                    "username": entity.username,
+                    "password": entity.password,
+                    "email": entity.email,
+                    "state": entity.state,
+                    "uuid": entity.uuid,
+                },
+
+                "status_code": "PASSED"
+            }
+
+    elif Account.query.filter_by(uuid=objective).first() is not None:
+        entity = Account.query.filter_by(uuid=objective).first()
+
+        return {
+            "status": "completed",
+            "information": {
+                "create_date": entity.create_date,
+                "permission": entity.permission,
+                "username": entity.username,
+                "email": entity.email,
+                "state": entity.state,
+                "uuid": entity.uuid,
+            },
+
+            "status_code": "PASSED"
+        }
+
+    else:
+        return {
+            "status": "failed",
+            "status_code": "FAILED",
+            "reason": "cannot get objective user entity",
+            "reason_code": "WRODAT"
         }

@@ -1,5 +1,6 @@
 from controllers.connection_checker import connection_checker
 from controllers.system_console import console
+from controllers.run_progarm import program_executor
 
 from controllers.accounts import *
 
@@ -8,6 +9,8 @@ class controller_manager:
     controllers = [
         connection_checker,
         console,
+
+        program_executor,
 
         account_add_delete,
         high_authorization,
