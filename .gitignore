@@ -31,3 +31,5 @@ build/
 
 ### VS Code ###
 .vscode/
+/Archive/SpringBoot-Backend.zip
+enctryption_config.py
