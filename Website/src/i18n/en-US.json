@@ -1,0 +1,10 @@
+{
+  "application": "SpeedCode",
+
+  "navigator": {
+    "close-menu": "Close",
+    "menu": {
+      "main": "main.cpp"
+    }
+  }
+}

@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with EazyDraw for Mac ( http://www.eazydraw.com/ ) -->
+
+<svg
+    version="1.1"
+    xmlns:dc="http://purl.org/dc/elements/1.1/"
+    xmlns:cc="http://creativecommons.org/ns#"
+    xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+    xmlns:svg="http://www.w3.org/2000/svg"
+    xmlns:xlink="http://www.w3.org/1999/xlink"
+    xmlns="http://www.w3.org/2000/svg"
+    width="112.29993856"
+    height="143.137474062"
+    viewBox="0, 0, 112.29993856, 143.137474062"
+    preserveAspectRatio="none"
+    id="svg2">
+   <defs
+       id="defs_A6386C6D">
+      <linearGradient id="linearStops_4DDDB12D">
+         <stop id="stop_4DDDB12D_0" offset="0" style="stop-color:#F8D686;stop-opacity:1;"/>
+         <stop id="stop_4DDDB12D_0.499749603271" offset="0.499749603271" style="stop-color:#FEFC8C;stop-opacity:1;"/>
+         <stop id="stop_4DDDB12D_1" offset="1" style="stop-color:#FEFB53;stop-opacity:1;"/>
+      </linearGradient>
+      <linearGradient id="linearGradient_4DDDB12D" x1="0.5" y1="0" x2="0.5" y2="1" gradientUnits="objectBoundingBox" xlink:href="#linearStops_4DDDB12D"/>
+      <filter
+          id="filter_4DDDB12D"
+          width="1.169508876717"
+          height="1.153339816714"
+          x="-0.1"
+          y="-0.1">
+         <feGaussianBlur
+             id="filter_4DDDB12D_blur"
+             in="SourceAlpha"
+             stdDeviation="0"
+             result="blur"/>
+         <feColorMatrix
+             id="filter_4DDDB12D_ColorMatrix"
+             result="bluralpha"
+             type="matrix"
+             values="0 0 0 0 0      0 0 0 0 0      0 0 0 0 0      0 0 0 0.75 0"/>
+         <feOffset
+             id="filter_4DDDB12D_Offset"
+             in="bluralpha"
+             dx="7.071067811865"
+             dy="7.071067811865"
+             result="offsetBlur"/>
+         <feMerge
+             id="filter_4DDDB12D_Merge">
+            <feMergeNode id="filter_4DDDB12D_MergeNode_a" in="offsetBlur"/>
+            <feMergeNode id="filter_4DDDB12D_MergeNode_b" in="SourceGraphic"/>
+         </feMerge>
+      </filter>
+      <filter
+          id="filter_CFE6083D"
+          width="1.303492759006"
+          height="1.299237331878"
+          x="-0.1"
+          y="-0.1">
+         <feGaussianBlur
+             id="filter_CFE6083D_blur"
+             in="SourceAlpha"
+             stdDeviation="0"
+             result="blur"/>
+         <feColorMatrix
+             id="filter_CFE6083D_ColorMatrix"
+             result="bluralpha"
+             type="matrix"
+             values="0 0 0 0 0      0 0 0 0 0      0 0 0 0 0      0 0 0 0.75 0"/>
+         <feOffset
+             id="filter_CFE6083D_Offset"
+             in="bluralpha"
+             dx="7.071067811865"
+             dy="7.071067811865"
+             result="offsetBlur"/>
+         <feMerge
+             id="filter_CFE6083D_Merge">
+            <feMergeNode id="filter_CFE6083D_MergeNode_a" in="offsetBlur"/>
+            <feMergeNode id="filter_CFE6083D_MergeNode_b" in="SourceGraphic"/>
+         </feMerge>
+      </filter>
+   </defs>
+   <metadata
+       id="metadata7">
+      <rdf:RDF>
+         <cc:Work
+             rdf:about="">
+            <dc:format>image/svg+xml</dc:format>
+            <dc:type rdf:resource="http://purl.org/dc/dcmitype/StillImage"/>
+            <dc:title></dc:title>
+         </cc:Work>
+      </rdf:RDF>
+   </metadata>
+   <g
+       id="layer_Paper"
+       style="fill:#000000;fill-opacity:1;stroke:#000000;stroke-opacity:1;fill-rule:nonzero;stroke-linecap:square;stroke-linejoin:miter;stroke-width:1;stroke-miterlimit:10">
+      <path
+          style="fill:url(#linearGradient_4DDDB12D);stroke:none;filter:url(#filter_4DDDB12D)"
+          id="4DDDB12D"
+          d="M53.8605194092,129.890625 L98.0455971728,63.6130083547 L100.719894409,59.6015624999 C102.559738159,56.83984375 101.813644409,52.9329427084 99.0499725341,51.267578125 C97.557428654,50.609920462 96.9051265776,50.2592182647 95.7198944091,50.259765625
+L58.8761444092,50.259765625 L58.8761444092,6.009765625055 C58.8761444092,2.691406249983 56.1866912842,0 52.8683319092,0 C50.8585662842,0 48.9835662841,1.003906249954 47.8683319092,2.67578125006 L1.00895690916,72.9648437501
+C-0.830886840834,75.7265625 -0.084793090786,79.45703125 2.676925659208,81.298828125 C3.663506409848,81.9570963186 4.822930529332,82.3084575552 6.008956909195,82.30859375 L42.8527069091,82.30859375 L42.8527069091,126.556640625
+C42.8527069091,129.875 45.5421600342,132.56640625 48.8605194091,132.56640625 C50.8702850342,132.56640625 52.7472381592,131.5625 53.8605194092,129.890625 z"/>
+      <path
+          style="fill:#5A3FFF;stroke:#5A3FFF;filter:url(#filter_CFE6083D)"
+          id="CFE6083D"
+          d="M33.8110809327,95.4550781247 C39.4788008846,93.7677274784 45.1465208365,92.0803768321 50.8142407884,90.3930261858 C48.0185466997,81.0024402985 38.139614881,75.6562241802 28.7490289937,78.4519182689 C19.3584431065,81.2476123577 14.0122269882,91.1265441764 16.8079210769,100.517130064
+C19.6036151656,109.907715951 29.4825469843,115.253932069 38.8731328716,112.45823798 C44.0898580694,110.905154076 48.3049256202,107.043286463 50.3074592972,101.982046469 C44.808666509,99.8063903542 39.3098737208,97.6307342395 33.8110809327,95.4550781247
+z"/>
+   </g>
+</svg>
