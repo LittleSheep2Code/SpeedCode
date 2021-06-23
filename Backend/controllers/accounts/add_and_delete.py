@@ -99,12 +99,17 @@ def register():
             }
 
         if Account.query.filter_by(username=username).first() is not None:
-            return {
-                "status": "request denied",
-                "status_code": "REQDID",
-                "reason": "same username",
-                "reason_code": "REPEAT-NAME"
-            }
+            if Account.query.filter_by(username=username).first().state == -1:
+                database.session.delete(Account.query.filter_by(username=username).first())
+                database.session.commit()
+
+            else:
+                return {
+                    "status": "request denied",
+                    "status_code": "REQDID",
+                    "reason": "same username",
+                    "reason_code": "REPEAT-NAME"
+                }
 
         if len(Account.query.filter_by(email=email).all()) >= 2:
             return {

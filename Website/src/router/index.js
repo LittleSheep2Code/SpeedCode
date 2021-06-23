@@ -8,6 +8,12 @@ const routes = [
     path: '/',
     name: 'Index',
     component: () => import("@/views/Index")
+  },
+
+  {
+    path: '/update-logs',
+    name: 'UpdateLogs',
+    component: () => import("@/views/Announcement/UpdateLogs")
   }
 ]
 

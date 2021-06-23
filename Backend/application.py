@@ -28,4 +28,4 @@ if __name__ == '__main__':
     scheduler.init_app(application)
     scheduler.start()
 
-    application.run(port=20020, debug=True)
+    application.run(port=20020, debug=False)

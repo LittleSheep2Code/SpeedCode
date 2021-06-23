@@ -8,6 +8,26 @@ module.exports = {
     }
   },
 
+  devServer: {
+    proxy: {
+      '/reCaptcha': {
+        target: 'https://recaptcha.net',
+        changeOrigin: true,
+        pathRewrite: {
+          '^/reCaptcha': ''
+        }
+      },
+
+      '/s-code': {
+        target: 'http://127.0.0.1:20020',
+        changeOrigin: true,
+        pathRewrite: {
+          '^/s-code': ''
+        }
+      }
+    }
+  },
+
   transpileDependencies: [
     'vuetify'
   ]

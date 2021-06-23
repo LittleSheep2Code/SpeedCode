@@ -1,10 +1,86 @@
 {
   "application": "SpeedCode",
+  "application-des": {
+    "ls": [
+      "The professional code runner for contestant"
+    ],
+
+    "start": "Getting start!"
+  },
 
   "navigator": {
     "close-menu": "Close",
+
     "menu": {
-      "main": "main.cpp"
+      "main": "Main"
+    }
+  },
+
+  "updatelogs": {
+    "notfound": "There is nothing here"
+  },
+
+  "actions": {
+    "confirm": "Confirm?",
+    "next": "Next"
+  },
+
+  "user-manage": {
+    "dialogs": {
+      "title": {
+        "login": "Login",
+        "register": "Register"
+      },
+
+      "steps": {
+        "register": [
+          "Commit Basic data",
+          "Verify your email",
+          "Well done"
+        ]
+      },
+
+      "message": {
+        "logout": "You confirm wanna logout?"
+      },
+
+      "inputs": {
+        "login": {
+          "username": "Your username",
+          "username-require": "Username is require",
+          "password": "Your password",
+          "password-require": "Password is require"
+        },
+
+        "register": {
+          "username": "Your username",
+          "username-require": "Username is require",
+          "password": "Your password",
+          "password-require": "Password is require",
+          "email": "Your email",
+          "email-require": "Email is require"
+        }
+      },
+
+      "res": {
+        "login": {
+          "completed": "Completed login! The page will redirect in 3 second...",
+          "wrong-data": "Cannot login. Please check your enter data!"
+        },
+
+        "logout": {
+          "completed": "Completed logout! The page will redirect in 3 second..."
+        },
+
+        "register": {
+          "completed": "<span style='font-size: 24px'><b>Completed!</b></span><br>Now you can login with your email.",
+
+          "wrong-username": "Username must be letters, number and underline, and the length min is 4.",
+          "wrong-email": "Your enter email format is wrong.",
+          "repeat-username": "Your username is repeat!",
+          "repeat-email": "Your email to register two account, please use another email!"
+        }
+      }
     }
   }
 }

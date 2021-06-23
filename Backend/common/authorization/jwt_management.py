@@ -4,6 +4,8 @@ import time
 import jwt
 
 from models.account_model import Account
+from models.connection_factory import database
+
 
 def summon_new_access_token(instance: Account):
 
@@ -15,6 +17,7 @@ def summon_new_access_token(instance: Account):
 
     # Commit
     Account.query.filter_by(uuid=instance.uuid).update({ "access_token": access })
+    database.session.commit()
 
     # Return
     return access
