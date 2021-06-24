@@ -14,18 +14,18 @@ from scheduler.tasks_configures import scheduler_config
 
 application.config.from_object(scheduler_config)
 
+# Init database
+database.init_app(application)
+
+# Init router
+from controllers import controller_manager
+controller_manager(application)
+
+# Start scheduler
+scheduler.init_app(application)
+scheduler.start()
+
 # Boot
 if __name__ == '__main__':
 
-    # Init database
-    database.init_app(application)
-
-    # Init router
-    from controllers import controller_manager
-    controller_manager(application)
-
-    # Start scheduler
-    scheduler.init_app(application)
-    scheduler.start()
-
-    application.run(port=20020, debug=False)
+    application.run(host="0.0.0.0", port=20020, debug=False)

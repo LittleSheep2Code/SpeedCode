@@ -13,6 +13,9 @@
 
               <v-divider></v-divider>
               <v-stepper-step step="2" :complete="step > 2">{{ $t("user-manage.dialogs.steps.register[1]") }}</v-stepper-step>
+
+              <v-divider></v-divider>
+              <v-stepper-step step="3" :complete="step > 3">{{ $t("user-manage.dialogs.steps.register[2]") }}</v-stepper-step>
             </v-stepper-header>
 
             <v-stepper-items>
@@ -42,6 +45,29 @@
 
                 <v-divider style="margin-top: 16px; margin-bottom: 8px"></v-divider>
                 <v-btn color="primary" text @click="commit_basic_data" :loading="form.wait">{{ $t("actions.next") }}</v-btn>
+              </v-stepper-content>
+
+              <v-stepper-content step="2">
+                <v-row>
+                  <v-col cols="12">
+                    <v-text-field :label="$t('user-manage.dialogs.inputs.register.email-code')" v-model="form.email_code"
+                                  :loading="form.wait"></v-text-field>
+                  </v-col>
+
+                  <v-col cols="12">
+                    <v-btn color="primary" text @click="commit_email_code" :loading="form.wait">{{ $t("actions.next") }}</v-btn>
+                  </v-col>
+                </v-row>
+              </v-stepper-content>
+
+              <v-stepper-content step="3">
+                <v-row>
+                  <v-col cols="12" class="text-center"><div v-html="$t('user-manage.dialogs.res.register.completed')"></div></v-col>
+
+                  <v-col cols="12" class="text-center">
+                    <v-btn color="primary" text @click="step = 1" :loading="form.wait">{{ $t("actions.again") }}</v-btn>
+                  </v-col>
+                </v-row>
               </v-stepper-content>
             </v-stepper-items>
           </v-stepper>
@@ -125,9 +151,36 @@ export default {
 
           this.form.wait = false
         })
+      }
+    },
+
+    commit_email_code() {
+
+      this.form.wait = true
+
+      let data = new FormData()
+      data.set("username", this.form.username)
+      data.set("password", this.form.password)
+      data.set("email", this.form.email)
+      data.set("email_code", this.form.email_code)
+
+      this.axios.post("/s-code/account/sign-up", data).then(response => {
+
+        if(response.data["status_code"] === "WRODAT") {
+          this.$dialog.notify.warning(i18n.t("user-manage.dialogs.res.register.wrong-email-code"), {
+            position: "top-right",
+            timeout: 3000
+          })
+        }
+
+        if(response.data["status_code"] === "PASSED") {
+          this.step++
+        }
 
         this.form.wait = false
-      }
+      }).catch(() => {
+        this.form.wait = false
+      })
     }
   }
 }

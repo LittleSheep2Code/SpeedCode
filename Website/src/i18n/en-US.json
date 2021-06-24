@@ -22,7 +22,15 @@
 
   "actions": {
     "confirm": "Confirm?",
-    "next": "Next"
+    "next": "Next",
+    "again": "Again"
+  },
+
+  "message": {
+    "axios": {
+      "error-title": "Unable send request",
+      "error-text": "Send request while error: "
+    }
   },
 
   "user-manage": {
@@ -58,7 +66,9 @@
           "password": "Your password",
           "password-require": "Password is require",
           "email": "Your email",
-          "email-require": "Email is require"
+          "email-require": "Email is require",
+          "email-code": "Please enter verify require code",
+          "email-code-require": "Email verify code is require"
         }
       },
 
@@ -77,6 +87,7 @@
 
           "wrong-username": "Username must be letters, number and underline, and the length min is 4.",
           "wrong-email": "Your enter email format is wrong.",
+          "wrong-email-code": "Please check your email verify code, it's wrong.",
           "repeat-username": "Your username is repeat!",
           "repeat-email": "Your email to register two account, please use another email!"
         }

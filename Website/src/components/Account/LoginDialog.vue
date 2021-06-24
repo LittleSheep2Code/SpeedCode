@@ -83,9 +83,9 @@ export default {
           }
 
           this.form.wait = false
+        }).catch(() => {
+          this.form.wait = false
         })
-
-        this.form.wait = false
       }
     }
   }
