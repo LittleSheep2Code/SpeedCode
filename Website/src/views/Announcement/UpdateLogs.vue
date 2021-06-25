@@ -11,7 +11,7 @@
 </template>
 
 <script>
-import Footers from "@/components/Footers";
+import Footers from "@/components/LayoutsComponents/Footers/Footers";
 export default {
   name: "UpdateLogs",
   components: { Footers },

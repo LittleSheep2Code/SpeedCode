@@ -1,1 +1,1 @@
-gunicorn -w 4 -b 127.0.0.1:20020 --access-logfile logs/access.log --error-logfile logs/error.log application:application
+gunicorn -w 4 -b 127.0.0.1:20020 application:application

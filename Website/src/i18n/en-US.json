@@ -12,7 +12,8 @@
     "close-menu": "Close",
 
     "menu": {
-      "main": "Main"
+      "main": "Main",
+      "code-runner": "Code Runner"
     }
   },
 
@@ -92,6 +93,12 @@
           "repeat-email": "Your email to register two account, please use another email!"
         }
       }
+    }
+  },
+
+  "editors": {
+    "toolbar": {
+      "settings": "Settings"
     }
   }
 }

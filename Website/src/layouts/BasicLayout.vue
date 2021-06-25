@@ -125,7 +125,8 @@ export default {
     isNavigationOpen: false,
 
     navigatorItems: [
-      { icon: "mdi-latitude", title: i18n.t("navigator.menu.main"), component: "/" }
+      { icon: "mdi-latitude", title: i18n.t("navigator.menu.main"), component: "/" },
+      { icon: "mdi-content-save-edit", title: i18n.t("navigator.menu.code-runner"), component: "/utils/editor" }
     ]
   }),
 }
