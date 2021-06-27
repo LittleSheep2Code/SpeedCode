@@ -1,0 +1,1 @@
+scp -r ./* XSheep@43.129.25.210:/home/XSheep/projects/CodeCraft-SpeedCode/Backend-Server

@@ -5,12 +5,16 @@
   "scripts": {
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build",
+    "deploy-serve": "yarn build && serve -s dist -l 2002",
+    "jserve": "serve -s dist -l 2002",
+    "deploy": "yarn build && scp -r dist/* XSheep@43.129.25.210:/home/XSheep/projects/CodeCraft-SpeedCode/View-Server",
     "i18n:report": "vue-cli-service i18n:report --src \"./src/**/*.?(js|vue)\" --locales \"./src/i18n/**/*.json\""
   },
   "dependencies": {
     "axios": "^0.21.1",
     "core-js": "^3.6.5",
     "register-service-worker": "^1.7.1",
+    "serve": "^12.0.0",
     "vue": "^2.6.11",
     "vue-codemirror": "^4.0.6",
     "vue-cookies": "^1.7.4",

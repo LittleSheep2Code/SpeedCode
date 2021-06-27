@@ -5,7 +5,7 @@
                   ref="editor" :options="editor_configs.configs" v-model="editor_configs.value" ></codemirror>
     </div>
 
-    <EditorFooter ref="footer" @reload="configure_loader"></EditorFooter>
+    <EditorFooter ref="footer" @reload="configure_loader" @save-require="save_editor_code"></EditorFooter>
   </div>
 </template>
 
@@ -77,7 +77,7 @@ export default {
         matchBrackets: true,
         showCursorWhenSelecting: true,
         theme: "idea",
-        extraKeys: { "Tab": "autocomplete" }
+        extraKeys: { "Ctrl+Q": "autocomplete" }
       },
 
       value: "",
@@ -141,7 +141,7 @@ export default {
       }
 
       this.$refs["editor"].refresh()
-    },
+    }
   },
 
   mounted() {
