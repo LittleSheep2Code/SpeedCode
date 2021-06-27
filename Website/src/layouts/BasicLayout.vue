@@ -29,13 +29,25 @@
 
       <v-spacer></v-spacer>
 
+      <!--  Language switcher   -->
+      <v-menu offset-y bottom open-on-hover>
+        <template v-slot:activator="{ on, attrs }">
+          <v-icon v-on="on" v-bind="attrs" style="margin-right: 12px">mdi-translate</v-icon>
+        </template>
+
+        <v-list class="text-right" dense>
+          <v-list-item :disabled="$i18n.locale === 'en-US'" @click="$i18n.locale = 'en-US'">English</v-list-item>
+          <v-list-item :disabled="$i18n.locale === 'cn-ZH'" @click="$i18n.locale = 'cn-ZH'">简体中文</v-list-item>
+        </v-list>
+      </v-menu>
+
       <!--  Doesn't login avatar    -->
       <v-menu offset-y bottom v-if="selectAccounts.access == null" open-on-hover>
         <template v-slot:activator="{ on, attrs }">
           <v-avatar class="mr-10" color="blue-grey darken-1" size="32px" v-bind="attrs" v-on="on" tile><v-icon color="white">mdi-account</v-icon></v-avatar>
         </template>
 
-        <v-list class="text-right">
+        <v-list class="text-right" dense>
           <v-list-item @click="dialogs.Login = true"><v-list-item-subtitle>Login &nbsp; <v-icon>mdi-login-variant</v-icon></v-list-item-subtitle></v-list-item>
           <v-list-item @click="dialogs.Register = true"><v-list-item-subtitle>Register &nbsp; <v-icon>mdi-account-plus</v-icon></v-list-item-subtitle></v-list-item>
         </v-list>
@@ -47,7 +59,9 @@
           <v-avatar class="mr-10" color="orange darken-1" size="32px" v-bind="attrs" v-on="on" tile>{{ selectAccounts.iusername }}</v-avatar>
         </template>
 
-        <v-list class="text-right">
+        <v-list class="text-right" dense>
+          <v-list-item><span>{{ selectAccounts.username }}</span></v-list-item>
+          <v-divider></v-divider>
           <v-list-item @click="exit_account"><v-list-item-subtitle>Logout &nbsp; <v-icon>mdi-logout-variant</v-icon></v-list-item-subtitle></v-list-item>
           <v-divider></v-divider>
           <v-list-item @click="dialogs.Activate = true" v-show="selectAccounts.state === 0"><v-list-item-subtitle>Activate &nbsp; <v-icon>mdi-account-reactivate</v-icon></v-list-item-subtitle></v-list-item>

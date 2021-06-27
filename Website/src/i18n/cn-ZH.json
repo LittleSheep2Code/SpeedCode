@@ -26,13 +26,11 @@
     },
 
     "axios": {
-      "axios": {
-        "error-title": "无法发送请求",
-        "error-text": "发送请求中遇到错误: ",
+      "error-title": "无法发送请求",
+      "error-text": "发送请求中遇到错误: ",
 
-        "auth-error-title": "无法验证你的身份",
-        "auth-error-text": "无法使用你的 AccessToken 验证你的身份. 请重新登录!"
-      }
+      "auth-error-title": "无法验证你的身份",
+      "auth-error-text": "无法使用你的 AccessToken 验证你的身份. 请重新登录!"
     }
   },
 

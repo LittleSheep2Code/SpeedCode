@@ -37,6 +37,8 @@ Axios.interceptors.response.use((response) => {
         showClose: false,
         actions: null
       })
+
+      Vue.prototype.$cookies.remove("access")
     }
   }
 

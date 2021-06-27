@@ -26,13 +26,11 @@
     },
 
     "axios": {
-      "axios": {
-        "error-title": "Unable send request",
-        "error-text": "Send request while error: ",
+      "error-title": "Unable send request",
+      "error-text": "Send request while error: ",
 
-        "auth-error-title": "Unable to verify your identity",
-        "auth-error-text": "We cannot verify your identity with your access token. Please login again!"
-      }
+      "auth-error-title": "Unable to verify your identity",
+      "auth-error-text": "We cannot verify your identity with your access token. Please login again!"
     }
   },
 
