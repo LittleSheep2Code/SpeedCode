@@ -7,7 +7,7 @@
         </v-card-title>
 
         <v-card-text>
-          <div>
+          <div style="margin-top: 30px">
             <div>
               <h4 class="config-subtitle">{{ $t("editor.Runtime.Settings.stdin") }}</h4>
               <v-textarea auto-grow outlined dense clearable v-model="runtime_config.stdin"></v-textarea>
