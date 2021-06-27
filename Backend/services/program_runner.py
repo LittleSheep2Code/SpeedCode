@@ -1,3 +1,5 @@
+from time import sleep
+
 from requests import post, get
 from datetime import datetime
 from enum import Enum
@@ -79,10 +81,12 @@ class program_runner(object):
     @staticmethod
     def select_submission(mission_id):
 
-        response = get(JUDGE0_API + "/submissions/" + mission_id)
-        response_json = response.json()
+        while True:
+            sleep(0.5)
+            response = get(JUDGE0_API + "/submissions/" + mission_id)
+            response_json = response.json()
 
-        if response_json["status"]["id"] != 3:
-            raise RuntimeWarning("Failed to query submissions!")
+            if response_json["status"]["id"] != 1 and response_json["status"]["id"] != 2:
+                break
 
         return response_json

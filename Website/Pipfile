@@ -4,9 +4,7 @@ verify_ssl = true
 name = "pypi"
 
 [packages]
-flask-apscheduler = "*"
-py3-validate-email = "*"
-requests = "*"
+mod-wsgi = "*"
 
 [dev-packages]
 
