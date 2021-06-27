@@ -1,0 +1,181 @@
+{
+  "application": "SpeedCode",
+
+  "navigator": {
+    "close-menu": "关闭",
+
+    "menu": {
+      "main": "主页",
+      "code-runner": "代码运行器"
+    }
+  },
+
+  "normal": {
+    "actions": {
+      "confirm": "确认?",
+      "next": "下一个",
+      "again": "再来",
+
+      "cancel": "取消",
+      "run": "运行"
+    },
+
+    "status": {
+      "failed": "失败",
+      "success": "成功"
+    },
+
+    "axios": {
+      "axios": {
+        "error-title": "无法发送请求",
+        "error-text": "发送请求中遇到错误: ",
+
+        "auth-error-title": "无法验证你的身份",
+        "auth-error-text": "无法使用你的 AccessToken 验证你的身份. 请重新登录!"
+      }
+    }
+  },
+
+  "index": {
+    "description": {
+      "list": [
+        "给竞赛者的专业代码运行器"
+      ],
+
+      "start": "开始吧!"
+    }
+  },
+
+  "update-logs": {
+    "notfound": "这里啥也没有！"
+  },
+
+  "user-management": {
+    "Login": {
+      "title": "登陆",
+      "inputs": {
+        "username": "您的用户名",
+        "password": "登陆密码"
+      },
+
+      "inputs-rule": {
+        "username": "必须输入用户名",
+        "password": "必须输入密码"
+      },
+
+      "messages": {
+        "completed": "完成登录",
+        "wrong-data": "无法登录，请检查你的数据！"
+      }
+    },
+
+    "Register": {
+      "title": "注册",
+      "inputs": {
+        "email-code": "请输入验证码",
+        "username": "您的用户名",
+        "password": "登陆密码",
+        "email": "您的邮箱"
+      },
+
+      "inputs-rule": {
+        "username": "必须输入用户名",
+        "password": "必须输入密码",
+        "email": "必须输入邮件地址"
+      },
+
+      "steps": [
+        "提交基本信息",
+        "验证你的邮件",
+        "完成"
+      ],
+
+      "messages": {
+        "completed": "<span style='font-size: 24px'><b>完成!</b></span><br>现在可以用邮箱登录.",
+
+        "wrong-username": "用户名必须是字母,数字和下划线组成,长度大于 4 个字符.",
+        "wrong-email": "你输入的邮箱格式错误.",
+        "wrong-email-code": "输入错误,请检查邮件验证码.",
+        "repeat-username": "用户名重复了",
+        "repeat-email": "你的邮箱已经注册了2个账号,请用其他邮箱注册"
+      }
+    },
+
+    "Activate": {
+      "title": "激活",
+      "inputs": {
+        "activate": "一个有效的激活吗"
+      },
+
+      "messages": {
+        "completed": "设置完成,账号现在已经激活了",
+
+        "wrong-activate": "请注入正确的激活码!"
+      }
+    },
+
+    "Logout": {
+      "text": "你要登出吗?",
+      "messages": {
+        "completed": "登出完成!",
+        "verify-failed": "你的会话结束,安全登出."
+      }
+    }
+  },
+
+  "editor": {
+    "Toolbar": {
+      "settings": "设置",
+      "clear": "清除代码",
+      "runtime": "F9(跳过设置)",
+      "save": "F4(保存)",
+
+      "status": {
+        "unsaved": "未保存",
+        "saved": "已保存"
+      },
+
+      "Clear": {
+        "title": "你确认要清楚所有代码?",
+        "text": "该操作不可撤消 Ctrl+Z / Command+Z"
+      }
+    },
+
+    "Settings": {
+      "editor": "编辑器",
+      "Editor": {
+        "language": "语言",
+        "tabsize": "缩进尺寸"
+      },
+
+      "runtime": "运行库",
+      "Runtime": {
+        "environment": "运行环境"
+      },
+
+      "autosave": "自动保存",
+      "Autosave": {
+        "delay": "自动保存间隔(毫秒)"
+      }
+    },
+
+    "Runtime": {
+      "running": "运行中...",
+      "null-code": "代码不可为空",
+
+      "settings": "设置",
+      "Settings": {
+        "stdin": "标准输入"
+      },
+
+      "result": "运行结果",
+      "Result": {
+        "stdout": "标准输出",
+        "stderr": "标准错误",
+        "compile-error": "编译错误",
+        "memory": "内存占用",
+        "time": "运行时长"
+      }
+    }
+  }
+}
