@@ -7,14 +7,14 @@
             <template v-slot:activator="{ on, attrs }">
               <v-btn icon v-bind="attrs" v-on="on" @click="dialogs.settings = true"><v-icon>mdi-cog</v-icon></v-btn>
             </template>
-            <span>{{ $t("editors.toolbar.settings") }}</span>
+            <span>{{ $t("editor.Toolbar.settings") }}</span>
           </v-tooltip>
 
           <v-tooltip right>
             <template v-slot:activator="{ on, attrs }">
               <v-btn icon v-bind="attrs" v-on="on" @click="clear_code"><v-icon>mdi-backspace</v-icon></v-btn>
             </template>
-            <span>Clear Code</span>
+            <span>{{ $t("editor.Toolbar.clear") }}</span>
           </v-tooltip>
 
           <v-spacer></v-spacer>
@@ -24,7 +24,7 @@
               <v-btn v-bind="attrs" v-on="on" @click="dialogs.application = true"
                      text>{{ u_runtime }} &nbsp; <v-icon color="green">mdi-play</v-icon></v-btn>
             </template>
-            <span>F9(Skip Configure)</span>
+            <span>{{ $t("editor.Toolbar.runtime") }}</span>
           </v-tooltip>
         </v-card-title>
 
@@ -35,11 +35,11 @@
                 <v-tooltip left>
                   <template v-slot:activator="{ on, attrs }">
                     <div v-bind="attrs" v-on="on">
-                      <span v-if="!save_state">Unsaved</span>
-                      <span v-else><b>Saved</b></span>
+                      <span v-if="!save_state">{{ $t("editor.Toolbar.status.unsaved") }}</span>
+                      <span v-else><b>{{ $t("editor.Toolbar.status.saved") }}</b></span>
                     </div>
                   </template>
-                  <span>F4(Save Manually)</span>
+                  <span>{{ $t("editor.Toolbar.save") }}</span>
                 </v-tooltip>
               </div>
             </v-col>
@@ -57,6 +57,7 @@
 <script>
 import SettingsDialog from "@/views/Utils/Runner/SettingsDialog";
 import RuntimeDialog from "@/views/Utils/Runner/RuntimeDialog";
+import i18n from "@/i18n"
 
 export default {
   name: "EditorFooter",
@@ -82,8 +83,8 @@ export default {
   methods: {
     clear_code() {
       this.$dialog.warning({
-        title: "You really wanna clear all code?",
-        text: "This operation is irreversible，It's useless to press Ctrl+Z / Command+Z",
+        title: i18n.t("editor.Toolbar.Clear.title"),
+        text: i18n.t("editor.Toolbar.Clear.text"),
         showClose: false
       }).then(r => {
         if(r) {

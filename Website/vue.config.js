@@ -19,7 +19,7 @@ module.exports = {
       },
 
       '/s-code': {
-        target: 'https://apis.speed-code.online',
+        target: 'http://127.0.0.1:20020',
         changeOrigin: true,
         pathRewrite: {
           '^/s-code': ''

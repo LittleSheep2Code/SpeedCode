@@ -2,7 +2,7 @@
   <v-dialog v-model="display" @input="update_v_model" :width="width">
     <v-card>
       <v-card-title class="text-h6 secondary lighten-3">
-        <v-icon>mdi-login</v-icon> &nbsp; {{ $t("user-manage.dialogs.title.login") }}
+        <v-icon>mdi-login</v-icon> &nbsp; {{ $t("user-management.Login.title") }}
       </v-card-title>
 
       <v-card-text>
@@ -10,13 +10,13 @@
           <v-form lazy-validation ref="from.Login" v-model="form.accept">
             <v-row>
               <v-col cols="12" sm="6">
-                <v-text-field :label="$t('user-manage.dialogs.inputs.login.username')" v-model="form.username" required
-                              :rules="[ v => !!v || $t('user-manage.dialogs.inputs.login.username-require') ]"></v-text-field>
+                <v-text-field :label="$t('user-management.Login.inputs.username')" v-model="form.username" required
+                              :rules="[ v => !!v || $t('user-management.Login.inputs-rule.username') ]"></v-text-field>
               </v-col>
 
               <v-col cols="12" sm="6">
-                <v-text-field :label="$t('user-manage.dialogs.inputs.login.password')" type="password" v-model="form.password" required
-                              :rules="[ v => !!v || $t('user-manage.dialogs.inputs.login.password-require') ]"></v-text-field>
+                <v-text-field :label="$t('user-management.Login.inputs.password')" type="password" v-model="form.password" required
+                              :rules="[ v => !!v || $t('user-management.Login.inputs-rule.password') ]"></v-text-field>
               </v-col>
 
               <v-col cols="12" class="text-center" style="padding-top: -5px">
@@ -28,7 +28,7 @@
       </v-card-text>
 
       <v-card-actions>
-        <v-btn color="primary" text @click="commit_login" style="margin-left: 10px" :loading="form.wait">{{ $t("user-manage.dialogs.title.login") }}</v-btn>
+        <v-btn color="primary" text @click="commit_login" style="margin-left: 10px" :loading="form.wait">{{ $t("user-management.Login.title") }}</v-btn>
       </v-card-actions>
     </v-card>
   </v-dialog>
@@ -75,7 +75,7 @@ export default {
 
         this.axios.post("/s-code/account/sign-in", data).then(response => {
           if(response.status === 200 && response.data["status_code"] === "PASSED") {
-            this.$dialog.notify.info(i18n.t("user-manage.dialogs.res.login.completed"), {
+            this.$dialog.notify.info(i18n.t("user-management.Login.messages.completed"), {
               position: "top-right",
               timeout: 3000
             })
@@ -88,7 +88,7 @@ export default {
           }
 
           else if(response.data["reason_code"] === "WRODAT") {
-            this.$dialog.notify.warning(i18n.t("user-manage.dialogs.res.login.wrong-data"), {
+            this.$dialog.notify.warning(i18n.t("user-management.Login.messages.wrong-data"), {
               position: "top-right",
               timeout: 3000
             })

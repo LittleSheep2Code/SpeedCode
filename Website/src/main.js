@@ -32,8 +32,8 @@ Axios.interceptors.response.use((response) => {
   if(error.response.status === 400) {
     if(error.response.data["status_code"] === "CONREF" || error.response.data["reason_code"] === "UNDFID") {
       Vue.prototype.$dialog.warning({
-        title: i18n.t("message.axios.auth-error-title"),
-        text: i18n.t("message.axios.auth-error-text"),
+        title: i18n.t("normal.axios.auth-error-title"),
+        text: i18n.t("normal.axios.auth-error-text"),
         showClose: false,
         actions: null
       })
@@ -41,8 +41,8 @@ Axios.interceptors.response.use((response) => {
   }
 
   Vue.prototype.$dialog.error({
-    title: i18n.t("message.axios.error-title"),
-    text: i18n.t("message.axios.error-text") + JSON.stringify(error.message),
+    title: i18n.t("normal.axios.error-title"),
+    text: i18n.t("normal.axios.error-text") + JSON.stringify(error.message),
     showClose: false,
     actions: null
   })

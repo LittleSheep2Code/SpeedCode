@@ -1,12 +1,5 @@
 {
   "application": "SpeedCode",
-  "application-des": {
-    "ls": [
-      "The professional code runner for contestant"
-    ],
-
-    "start": "Getting start!"
-  },
 
   "navigator": {
     "close-menu": "Close",
@@ -17,107 +10,171 @@
     }
   },
 
-  "updatelogs": {
-    "notfound": "There is nothing here"
-  },
+  "normal": {
+    "actions": {
+      "confirm": "Confirm?",
+      "next": "Next",
+      "again": "Again",
 
-  "actions": {
-    "confirm": "Confirm?",
-    "next": "Next",
-    "again": "Again"
-  },
+      "cancel": "Cancel",
+      "run": "Run"
+    },
 
-  "message": {
+    "status": {
+      "failed": "Failed",
+      "success": "Success"
+    },
+
     "axios": {
-      "error-title": "Unable send request",
-      "error-text": "Send request while error: ",
+      "axios": {
+        "error-title": "Unable send request",
+        "error-text": "Send request while error: ",
 
-      "auth-error-title": "Unable to verify your identity",
-      "auth-error-text": "We cannot verify your identity with your access token. Please login again!"
-    }
-  },
-
-  "user-manage": {
-    "dialogs": {
-      "title": {
-        "login": "Login",
-        "register": "Register",
-        "activate": "Activate"
-      },
-
-      "steps": {
-        "register": [
-          "Commit Basic data",
-          "Verify your email",
-          "Well done"
-        ]
-      },
-
-      "message": {
-        "logout": "You confirm wanna logout?"
-      },
-
-      "inputs": {
-        "login": {
-          "username": "Your username",
-          "username-require": "Username is require",
-          "password": "Your password",
-          "password-require": "Password is require"
-        },
-
-        "register": {
-          "username": "Your username",
-          "username-require": "Username is require",
-          "password": "Your password",
-          "password-require": "Password is require",
-          "email": "Your email",
-          "email-require": "Email is require",
-          "email-code": "Please enter verify require code",
-          "email-code-require": "Email verify code is require"
-        },
-
-        "activate": {
-          "activate": "An available activate code"
-        }
-      },
-
-      "res": {
-        "login": {
-          "completed": "Completed login!",
-          "wrong-data": "Cannot login. Please check your enter data!"
-        },
-
-        "logout": {
-          "completed": "Completed logout!"
-        },
-
-        "register": {
-          "completed": "<span style='font-size: 24px'><b>Completed!</b></span><br>Now you can login with your email.",
-
-          "wrong-username": "Username must be letters, number and underline, and the length min is 4.",
-          "wrong-email": "Your enter email format is wrong.",
-          "wrong-email-code": "Please check your email verify code, it's wrong.",
-          "repeat-username": "Your username is repeat!",
-          "repeat-email": "Your email to register two account, please use another email!"
-        },
-
-        "activate": {
-          "completed": "All are set! You can use activate require function now!",
-
-          "wrong-activate": "Please enter an available activate code!"
-        }
+        "auth-error-title": "Unable to verify your identity",
+        "auth-error-text": "We cannot verify your identity with your access token. Please login again!"
       }
     }
   },
 
-  "editors": {
-    "toolbar": {
-      "settings": "Settings"
+  "index": {
+    "description": {
+      "list": [
+        "The professional code runner for contestant"
+      ],
+
+      "start": "Getting start!"
+    }
+  },
+
+  "update-logs": {
+    "notfound": "There is nothing here"
+  },
+
+  "user-management": {
+    "Login": {
+      "title": "Login",
+      "inputs": {
+        "username": "Your username",
+        "password": "Your password"
+      },
+
+      "inputs-rule": {
+        "username": "Username is require",
+        "password": "Password is require"
+      },
+
+      "messages": {
+        "completed": "Completed login!",
+        "wrong-data": "Cannot login. Please check your enter data!"
+      }
     },
 
-    "settings": {
-      "subheader": {
-        "editor": "Editor"
+    "Register": {
+      "title": "Register",
+      "inputs": {
+        "email-code": "Please enter verify require code",
+        "username": "Your username",
+        "password": "Your password",
+        "email": "Your email"
+      },
+
+      "inputs-rule": {
+        "username": "Username is require",
+        "password": "Password is require",
+        "email": "Email is require"
+      },
+
+      "steps": [
+        "Commit Basic data",
+        "Verify your email",
+        "Well done"
+      ],
+
+      "messages": {
+        "completed": "<span style='font-size: 24px'><b>Completed!</b></span><br>Now you can login with your email.",
+
+        "wrong-username": "Username must be letters, number and underline, and the length min is 4.",
+        "wrong-email": "Your enter email format is wrong.",
+        "wrong-email-code": "Please check your email verify code, it's wrong.",
+        "repeat-username": "Your username is repeat!",
+        "repeat-email": "Your email to register two account, please use another email!"
+      }
+    },
+
+    "Activate": {
+      "title": "Activate",
+      "inputs": {
+        "activate": "An available activate code"
+      },
+
+      "messages": {
+        "completed": "All are set! You can use activate require function now!",
+
+        "wrong-activate": "Please enter an available activate code!"
+      }
+    },
+
+    "Logout": {
+      "text": "You confirm wanna logout?",
+      "messages": {
+        "completed": "Completed logout!",
+        "verify-failed": "Your session is timeout! Auto logout."
+      }
+    }
+  },
+
+  "editor": {
+    "Toolbar": {
+      "settings": "Settings",
+      "clear": "Clear Codes",
+      "runtime": "F9(Skip Configure)",
+      "save": "F4(Save)",
+
+      "status": {
+        "unsaved": "Unsaved",
+        "saved": "Saved"
+      },
+
+      "Clear": {
+        "title": "You really wanna clear all the code?",
+        "text": "This operation is irreversible，It's useless to press Ctrl+Z / Command+Z"
+      }
+    },
+
+    "Settings": {
+      "editor": "Editor",
+      "Editor": {
+        "language": "Language",
+        "tabsize": "Tabsize"
+      },
+
+      "runtime": "Runtime",
+      "Runtime": {
+        "environment": "Runtime Environment"
+      },
+
+      "autosave": "Automatic Save",
+      "Autosave": {
+        "delay": "Save Delay(ms)"
+      }
+    },
+
+    "Runtime": {
+      "running": "Running...",
+      "null-code": "Code cannot is None",
+
+      "settings": "Settings",
+      "Settings": {
+        "stdin": "Stdin"
+      },
+
+      "result": "Result",
+      "Result": {
+        "stdout": "Stdout",
+        "stderr": "Stderr",
+        "compile-error": "Compile Error",
+        "memory": "Memory Usage",
+        "time": "Time Usage"
       }
     }
   }

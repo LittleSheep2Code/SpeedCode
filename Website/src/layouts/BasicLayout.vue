@@ -81,14 +81,14 @@ export default {
   methods: {
     exit_account() {
       this.$dialog.warning({
-        title: this.$t("actions.confirm"),
-        text: this.$t("user-manage.dialogs.message.logout"),
+        title: this.$t("normal.actions.confirm"),
+        text: this.$t("user-management.Logout.text"),
         icon: "mdi-logout",
         showClose: false,
 
       }).then(s => {
         if(s) {
-          this.$dialog.notify.info(i18n.t("user-manage.dialogs.res.logout.completed"), {
+          this.$dialog.notify.info(i18n.t("user-management.Logout.messages.completed"), {
             position: "top-right",
             timeout: 3000
           })
@@ -105,6 +105,16 @@ export default {
       if(this.selectAccounts.access != null) {
 
         this.axios.get("/s-code/account/detail", { headers: { "access_token": this.selectAccounts.access } }).then(res => {
+
+          if(res.data["reason_code"] === "WRODAT") {
+            this.$dialog.notify.info(i18n.t("user-management.Logout.messages.verify-failed"), {
+              position: "top-right",
+              timeout: 3000
+            })
+
+            this.$cookies.remove("access")
+            this.reload_all_information()
+          }
 
           this.selectAccounts.username = res.data["information"]["username"]
           this.selectAccounts.iusername = res.data["information"]["username"].substr(0, 1)

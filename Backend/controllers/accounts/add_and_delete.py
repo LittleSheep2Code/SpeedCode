@@ -4,8 +4,6 @@ from uuid import uuid1
 
 from flask import Blueprint, request, render_template
 
-from models.model_utils import *
-from common.authorization import access_require
 from common.authorization.jwt_management import *
 from common.email_sender import send_email
 from controllers.accounts.high_permission_authization import summon_email_authorization_code
@@ -53,7 +51,13 @@ def sign_in():
     if not verify_access_token(entity.access_token, entity.uuid):
 
         # 需要更新
-        summon_new_access_token(entity)
+        access = summon_new_access_token(entity)
+
+        return {
+            "status": "sign in success, and update access code",
+            "information": access,
+            "status_code": "PASSED"
+        }
 
     # 返回 AccessToken 以及登陆成功
     return {

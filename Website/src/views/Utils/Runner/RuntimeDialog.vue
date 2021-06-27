@@ -3,21 +3,20 @@
     <v-dialog v-model="display" @input="update_v_model" :width="width">
       <v-card>
         <v-card-title class="text-h6 secondary lighten-3">
-          <v-icon>mdi-application-cog</v-icon> &nbsp; Execute
+          <v-icon>mdi-application-cog</v-icon> &nbsp; {{ $t("editor.Runtime.settings") }}
         </v-card-title>
 
         <v-card-text>
-          <v-alert style="margin-top: 30px" text outlined color="deep-orange" icon="mdi-fire">This dialog is not be translate</v-alert>
           <div>
             <div>
-              <h4 class="config-subtitle">Stdin</h4>
+              <h4 class="config-subtitle">{{ $t("editor.Runtime.Settings.stdin") }}</h4>
               <v-textarea auto-grow outlined dense clearable v-model="runtime_config.stdin"></v-textarea>
             </div>
           </div>
 
           <div class="text-left">
-            <v-btn color="grey" @click="update_v_model(false)" text>Cancel</v-btn>
-            <v-btn color="primary" @click="execute_script" :loading="wait" text>Run</v-btn>
+            <v-btn color="grey" @click="update_v_model(false)" text>{{ $t("normal.actions.cancel") }}</v-btn>
+            <v-btn color="primary" @click="execute_script" :loading="wait" text>{{ $t("normal.actions.run") }}</v-btn>
           </div>
         </v-card-text>
       </v-card>
@@ -26,29 +25,29 @@
     <v-dialog v-model="result" width="600px">
       <v-card>
         <v-card-title class="text-h6 success lighten-1">
-          <v-icon>mdi-information</v-icon> &nbsp; Result
+          <v-icon>mdi-information</v-icon> &nbsp; {{ $t("editor.Runtime.result") }}
         </v-card-title>
 
         <v-card-text>
           <div style="margin-top: 25px">
             <div v-show="result_content['stdout']">
-              <h4 class="result-title">Stdout</h4>
+              <h4 class="result-title">{{ $t("editor.Runtime.Result.stdout") }}</h4>
               <v-textarea dense :value="result_content['stdout']" auto-grow outlined readonly></v-textarea>
             </div>
             <div v-show="result_content['stderr']">
-              <h4 class="result-title">Stderr</h4>
+              <h4 class="result-title">{{ $t("editor.Runtime.Result.stderr") }}</h4>
               <v-textarea dense :value="result_content['stderr']" auto-grow outlined readonly></v-textarea>
             </div>
             <div v-show="result_content['compile_output']">
-              <h4 class="result-title">Compile Error</h4>
+              <h4 class="result-title">{{ $t("editor.Runtime.Result.compile-error") }}</h4>
               <v-textarea dense :value="result_content['compile_output']" auto-grow outlined readonly></v-textarea>
             </div>
             <div>
-              <h4 class="result-title">Memory Usage</h4>
+              <h4 class="result-title">{{ $t("editor.Runtime.Result.memory") }}</h4>
               <v-text-field dense :value="result_content['memory']" outlined readonly></v-text-field>
             </div>
             <div>
-              <h4 class="result-title">Time Usage</h4>
+              <h4 class="result-title">{{ $t("editor.Runtime.Result.time") }}</h4>
               <v-text-field dense :value="result_content['time']" outlined readonly></v-text-field>
             </div>
           </div>
@@ -59,6 +58,8 @@
 </template>
 
 <script>
+import i18n from "@/i18n";
+
 export default {
   name: "RuntimeDialog",
   data: () => ({
@@ -75,8 +76,8 @@ export default {
     window.addEventListener('keydown', (event) => {
       if(event.key === "F9" && !this.wait) {
         this.wait = true
-        this.$dialog.notify.info("Running...", {
-          position: "top-left",
+        this.$dialog.notify.info(i18n.t("editor.Runtime.running"), {
+          position: "top-right",
           timeout: 3000
         })
 
@@ -107,8 +108,8 @@ export default {
       let data = new FormData()
 
       if(this.$cookies.get("editor-code") == null) {
-        this.$dialog.notify.warning("Please enter code first!", {
-          position: "top-left",
+        this.$dialog.notify.warning(i18n.t("editor.Runtime.null-code"), {
+          position: "top-right",
           timeout: 3000
         })
 
@@ -131,7 +132,7 @@ export default {
 
         if(response.data["status_code"] !== "PASSED") {
           this.$dialog.error({
-            title: "Failed to running code",
+            title: i18n.t("normal.status.failed"),
             text: `<code>${JSON.stringify(response.data)}</code>`,
             showClose: false,
             actions: null

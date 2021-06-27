@@ -2,14 +2,14 @@
     <v-dialog v-model="display" @input="update_v_model" :width="width">
       <v-card>
         <v-card-title class="text-h6 secondary lighten-3">
-          <v-icon>mdi-account-reactivate</v-icon> &nbsp; {{ $t("user-manage.dialogs.title.activate") }}
+          <v-icon>mdi-account-reactivate</v-icon> &nbsp; {{ $t("user-management.Activate.title") }}
         </v-card-title>
 
         <v-card-text>
           <v-container>
             <v-row>
               <v-col cols="12">
-                <v-text-field :label="$t('user-manage.dialogs.inputs.activate.activate')" v-model="form.activate">
+                <v-text-field :label="$t('user-management.Activate.inputs.activate')" v-model="form.activate">
                 </v-text-field>
               </v-col>
             </v-row>
@@ -17,7 +17,7 @@
         </v-card-text>
 
         <v-card-actions>
-          <v-btn color="primary" text @click="commit_activate" style="margin-left: 10px" :loading="form.wait">{{ $t("user-manage.dialogs.title.activate") }}</v-btn>
+          <v-btn color="primary" text @click="commit_activate" style="margin-left: 10px" :loading="form.wait">{{ $t("user-management.Activate.title") }}</v-btn>
         </v-card-actions>
       </v-card>
     </v-dialog>
@@ -63,14 +63,14 @@ export default {
       this.axios.post("/s-code/account/activate", data, { headers: { "access_token": access } }).then(response => {
 
         if(response.data["status_code"] === "WRODAT") {
-          this.$dialog.notify.warning(i18n.t("user-manage.dialogs.res.activate.wrong-activate"), {
+          this.$dialog.notify.warning(i18n.t("user-management.Activate.messages.wrong-activate"), {
             position: "top-right",
             timeout: 3000
           })
         }
 
         if(response.data["status_code"] === "PASSED") {
-          this.$dialog.notify.info(i18n.t("user-manage.dialogs.res.activate.completed"), {
+          this.$dialog.notify.info(i18n.t("user-management.Activate.messages.completed"), {
             position: "top-right",
             timeout: 3000
           })

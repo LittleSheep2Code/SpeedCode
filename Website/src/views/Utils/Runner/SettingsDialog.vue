@@ -2,44 +2,43 @@
   <v-dialog v-model="display" @input="update_v_model" @input.capture="update_data" :width="width">
     <v-card>
       <v-card-title class="text-h6 secondary lighten-3">
-        <v-icon>mdi-cog</v-icon> &nbsp; {{ $t("editors.toolbar.settings") }}
+        <v-icon>mdi-cog</v-icon> &nbsp; {{ $t("editors.Toolbar.settings") }}
       </v-card-title>
 
       <v-card-text>
-        <v-alert style="margin-top: 30px" text outlined color="deep-orange" icon="mdi-fire">This dialog is not be translate</v-alert>
         <div>
           <div>
-            <h3 class="config-title">Editor</h3>
+            <h3 class="config-title">{{ $t("editors.Settings.editor") }}</h3>
 
             <div>
-              <h4 class="config-subtitle">Language</h4>
+              <h4 class="config-subtitle">{{ $t("editors.Settings.Editor.language") }}</h4>
               <v-select dense outlined v-model="config.settings.language" :items="config.data.available_language" return-object single-line
                         @change="config.settings.runtime = translator.go(config.settings.language.abbr)"
                         item-text="state" item-value="abbr"></v-select>
             </div>
 
             <div>
-              <h4 class="config-subtitle">Tab size</h4>
+              <h4 class="config-subtitle">{{ $t("editors.Settings.Editor.tabsize") }}</h4>
               <v-text-field type="number" validate-on-blur :rules="[value => value >= 0 || 'Minimum is 0']" dense outlined v-model="config.settings.tabsize"
                             @change="verify"></v-text-field>
             </div>
           </div>
 
           <div>
-            <h3 class="config-title">Runtime</h3>
+            <h3 class="config-title">{{ $t("editors.Settings.runtime") }}</h3>
 
             <div>
-              <h4 class="config-subtitle">Runtime Environment</h4>
+              <h4 class="config-subtitle">{{ $t("editors.Settings.Runtime.environment") }}</h4>
               <v-select dense outlined v-model="config.settings.runtime" :items="config.data.available_runtime" return-object single-line
                         item-text="state" item-value="abbr"></v-select>
             </div>
           </div>
 
           <div>
-            <h3 class="config-title">Automatic save</h3>
+            <h3 class="config-title">{{ $t("editors.Settings.autosave") }}</h3>
 
             <div>
-              <h4 class="config-subtitle">Save delay(ms)</h4>
+              <h4 class="config-subtitle">{{ $t("editors.Settings.Autosave.delay") }}</h4>
               <v-text-field type="number" validate-on-blur :rules="[value => value >= 0 || 'Minimum is 0']" dense outlined v-model="config.settings.autosave_delay"
                             @change="verify"></v-text-field>
             </div>

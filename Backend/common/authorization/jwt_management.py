@@ -10,7 +10,7 @@ from models.connection_factory import database
 def summon_new_access_token(instance: Account):
 
     # Summon new access token
-    payload = dict(exp=time.time() + 86400)
+    payload = dict(exp=time.time() + 172800)
     payload.update({"uuid": instance.uuid, "username": instance.username})
 
     access = jwt.encode(payload, instance.password, "HS256")
