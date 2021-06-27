@@ -44,25 +44,24 @@
       <!--  Completed login avatar    -->
       <v-menu offset-y bottom v-else open-on-hover>
         <template v-slot:activator="{ on, attrs }">
-          <v-avatar class="mr-10" color="orange darken-1" size="32px" v-bind="attrs" v-on="on" tile>{{ selectAccounts.username.substr(0, 1) }}</v-avatar>
+          <v-avatar class="mr-10" color="orange darken-1" size="32px" v-bind="attrs" v-on="on" tile>{{ selectAccounts.iusername }}</v-avatar>
         </template>
 
         <v-list class="text-right">
           <v-list-item @click="exit_account"><v-list-item-subtitle>Logout &nbsp; <v-icon>mdi-logout-variant</v-icon></v-list-item-subtitle></v-list-item>
+          <v-divider></v-divider>
+          <v-list-item @click="dialogs.Activate = true" v-show="selectAccounts.state === 0"><v-list-item-subtitle>Activate &nbsp; <v-icon>mdi-account-reactivate</v-icon></v-list-item-subtitle></v-list-item>
+          <v-list-item><v-list-item-subtitle>Edit &nbsp; <v-icon>mdi-account-edit</v-icon></v-list-item-subtitle></v-list-item>
         </v-list>
       </v-menu>
 
     </v-app-bar>
 
-    <v-main><v-container fill-height><slot/></v-container></v-main>
+    <v-main fill-height><slot/></v-main>
 
-    <v-dialog v-model="dialogs.Login" width="500px">
-      <LoginDialog></LoginDialog>
-    </v-dialog>
-
-    <v-dialog v-model="dialogs.Register" width="500px">
-      <RegisterDialog></RegisterDialog>
-    </v-dialog>
+    <LoginDialog v-model="dialogs.Login" width="500px" @complete="reload_all_information"></LoginDialog>
+    <RegisterDialog v-model="dialogs.Register" width="500px"></RegisterDialog>
+    <ActivateDialog v-model="dialogs.Activate" width="500px" @complete="reload_all_information"></ActivateDialog>
   </v-app>
 </template>
 
@@ -70,20 +69,13 @@
 import i18n from "@/i18n";
 import LoginDialog from "@/components/Account/LoginDialog";
 import RegisterDialog from "@/components/Account/RegisterDialog";
+import ActivateDialog from "@/components/Account/ActivateDialog";
 
 export default {
   name: "BasicLayout",
-  components: { RegisterDialog, LoginDialog },
+  components: { ActivateDialog, RegisterDialog, LoginDialog },
   mounted() {
-    this.selectAccounts.access = this.$cookies.get("access")
-
-    if(this.selectAccounts.access != null) {
-
-      this.axios.get("/s-code/account/detail", { headers: { "access_token": this.selectAccounts.access } }).then(res => {
-
-        this.selectAccounts.username = res.data["information"]["username"]
-      })
-    }
+    this.reload_all_information()
   },
 
   methods: {
@@ -102,24 +94,40 @@ export default {
           })
 
           this.$cookies.remove("access")
-
-          setTimeout(() => {
-            this.$router.go(0)
-          }, 3000)
+          this.reload_all_information()
         }
       })
+    },
+
+    reload_all_information() {
+      this.selectAccounts.access = this.$cookies.get("access")
+
+      if(this.selectAccounts.access != null) {
+
+        this.axios.get("/s-code/account/detail", { headers: { "access_token": this.selectAccounts.access } }).then(res => {
+
+          this.selectAccounts.username = res.data["information"]["username"]
+          this.selectAccounts.iusername = res.data["information"]["username"].substr(0, 1)
+          this.selectAccounts.state = res.data["information"]["state"]
+        })
+      }
+
+      this.$forceUpdate()
     }
   },
 
   data: () => ({
     dialogs: {
       Login: false,
-      Register: false
+      Register: false,
+      Activate: false
     },
 
     selectAccounts: {
       access: undefined,
-      username: undefined
+      username: undefined,
+      iusername: undefined,
+      state: undefined
     },
 
     isNavigationOpen: false,

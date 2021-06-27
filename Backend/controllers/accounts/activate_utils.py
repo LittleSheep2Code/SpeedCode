@@ -24,10 +24,8 @@ def activate_account():
 
     if activate_entity is None:
         return {
-            "status": "request denied",
-            "status_code": "REQDID",
-            "reason": "cannot found source activate code",
-            "reason_code": "WRODAT"
+            "status": "cannot found source activate code",
+            "status_code": "WRODAT"
         }
 
     Activate.query.filter_by(source=activate_code).update({"amount": activate_entity.amount - 1})

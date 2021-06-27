@@ -20,15 +20,34 @@ import VuetifyDialog from 'vuetify-dialog'
 import 'vuetify-dialog/dist/vuetify-dialog.css'
 Vue.use(VuetifyDialog, { context: { vuetify } })
 
+import VueCodemirror from "vue-codemirror";
+import 'codemirror/lib/codemirror.css'
+Vue.use(VueCodemirror)
+
 Axios.interceptors.response.use((response) => {
   return response
 }, (error) => {
+
+  // Process auth error
+  if(error.response.status === 400) {
+    if(error.response.data["status_code"] === "CONREF" || error.response.data["reason_code"] === "UNDFID") {
+      Vue.prototype.$dialog.warning({
+        title: i18n.t("message.axios.auth-error-title"),
+        text: i18n.t("message.axios.auth-error-text"),
+        showClose: false,
+        actions: null
+      })
+    }
+  }
+
   Vue.prototype.$dialog.error({
     title: i18n.t("message.axios.error-title"),
     text: i18n.t("message.axios.error-text") + JSON.stringify(error.message),
     showClose: false,
     actions: null
   })
+
+  return Promise.reject(error)
 })
 
 Vue.prototype.axios = Axios

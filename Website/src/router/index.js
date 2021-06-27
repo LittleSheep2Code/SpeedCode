@@ -8,14 +8,12 @@ const routes = [
     path: '/',
     name: 'Index',
     component: () => import("@/views/Index"),
+  },
 
-    children: [
-      {
-        path: 'update-logs',
-        name: 'UpdateLogs',
-        component: () => import("@/views/Announcement/UpdateLogs")
-      }
-    ]
+  {
+    path: '/update-logs',
+    name: 'UpdateLogs',
+    component: () => import("@/views/Announcement/UpdateLogs")
   },
 
   {

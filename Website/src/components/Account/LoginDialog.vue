@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <v-dialog v-model="display" @input="update_v_model" :width="width">
     <v-card>
       <v-card-title class="text-h6 secondary lighten-3">
         <v-icon>mdi-login</v-icon> &nbsp; {{ $t("user-manage.dialogs.title.login") }}
@@ -31,7 +31,7 @@
         <v-btn color="primary" text @click="commit_login" style="margin-left: 10px" :loading="form.wait">{{ $t("user-manage.dialogs.title.login") }}</v-btn>
       </v-card-actions>
     </v-card>
-  </div>
+  </v-dialog>
 </template>
 
 <script>
@@ -42,14 +42,26 @@ export default {
   name: "LoginDialog",
   components: { ReCAPTCHA },
   data: () => ({
-    "form": {
-      "wait": false,
-      "accept": false,
+    display: false,
+    form: {
+      wait: false,
+      accept: false,
 
-      "username": "",
-      "password": ""
+      username: "",
+      password: ""
     }
   }),
+
+  props: {
+    value: Boolean,
+    width: String
+  },
+
+  watch: {
+    value() {
+      this.display = this.value
+    }
+  },
 
   methods: {
     commit_login() {
@@ -70,9 +82,9 @@ export default {
 
             this.$cookies.set("access", response.data["information"])
 
-            setTimeout(() => {
-              this.$router.go(0)
-            }, 3000)
+            this.form.wait = false
+            this.$emit("input", false)
+            this.$emit("complete")
           }
 
           else if(response.data["reason_code"] === "WRODAT") {
@@ -87,6 +99,10 @@ export default {
           this.form.wait = false
         })
       }
+    },
+
+    update_v_model($event) {
+      this.$emit("input", $event)
     }
   }
 }

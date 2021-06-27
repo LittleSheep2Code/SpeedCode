@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <v-dialog v-model="display" @input="update_v_model" :width="width">
     <v-card>
       <v-card-title class="text-h6 secondary lighten-3">
         <v-icon>mdi-account-plus</v-icon> &nbsp; {{ $t("user-manage.dialogs.title.register") }}
@@ -50,8 +50,7 @@
               <v-stepper-content step="2">
                 <v-row>
                   <v-col cols="12">
-                    <v-text-field :label="$t('user-manage.dialogs.inputs.register.email-code')" v-model="form.email_code"
-                                  :loading="form.wait"></v-text-field>
+                    <v-text-field :label="$t('user-manage.dialogs.inputs.register.email-code')" v-model="form.email_code"></v-text-field>
                   </v-col>
 
                   <v-col cols="12">
@@ -74,7 +73,7 @@
         </v-container>
       </v-card-text>
     </v-card>
-  </div>
+  </v-dialog>
 </template>
 
 <script>
@@ -86,17 +85,29 @@ export default {
   components: { ReCAPTCHA },
 
   data: () => ({
-    "step": 1,
-    "form": {
-      "wait": false,
-      "accept": false,
+    step: 1,
+    display: false,
+    form: {
+      wait: false,
+      accept: false,
 
-      "username": "",
-      "password": "",
-      "email": "",
-      "email_code": ""
+      username: "",
+      password: "",
+      email: "",
+      email_code: ""
     }
   }),
+
+  props: {
+    value: Boolean,
+    width: String
+  },
+
+  watch: {
+    value() {
+      this.display = this.value
+    }
+  },
 
   methods: {
     commit_basic_data() {
@@ -156,6 +167,8 @@ export default {
 
     commit_email_code() {
 
+      if(this.form.email_code == null) return
+
       this.form.wait = true
 
       let data = new FormData()
@@ -181,6 +194,10 @@ export default {
       }).catch(() => {
         this.form.wait = false
       })
+    },
+
+    update_v_model($event) {
+      this.$emit("input", $event)
     }
   }
 }

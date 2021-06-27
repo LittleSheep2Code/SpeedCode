@@ -30,7 +30,10 @@
   "message": {
     "axios": {
       "error-title": "Unable send request",
-      "error-text": "Send request while error: "
+      "error-text": "Send request while error: ",
+
+      "auth-error-title": "Unable to verify your identity",
+      "auth-error-text": "We cannot verify your identity with your access token. Please login again!"
     }
   },
 
@@ -38,7 +41,8 @@
     "dialogs": {
       "title": {
         "login": "Login",
-        "register": "Register"
+        "register": "Register",
+        "activate": "Activate"
       },
 
       "steps": {
@@ -70,17 +74,21 @@
           "email-require": "Email is require",
           "email-code": "Please enter verify require code",
           "email-code-require": "Email verify code is require"
+        },
+
+        "activate": {
+          "activate": "An available activate code"
         }
       },
 
       "res": {
         "login": {
-          "completed": "Completed login! The page will redirect in 3 second...",
+          "completed": "Completed login!",
           "wrong-data": "Cannot login. Please check your enter data!"
         },
 
         "logout": {
-          "completed": "Completed logout! The page will redirect in 3 second..."
+          "completed": "Completed logout!"
         },
 
         "register": {
@@ -91,6 +99,12 @@
           "wrong-email-code": "Please check your email verify code, it's wrong.",
           "repeat-username": "Your username is repeat!",
           "repeat-email": "Your email to register two account, please use another email!"
+        },
+
+        "activate": {
+          "completed": "All are set! You can use activate require function now!",
+
+          "wrong-activate": "Please enter an available activate code!"
         }
       }
     }
@@ -99,6 +113,12 @@
   "editors": {
     "toolbar": {
       "settings": "Settings"
+    },
+
+    "settings": {
+      "subheader": {
+        "editor": "Editor"
+      }
     }
   }
 }
