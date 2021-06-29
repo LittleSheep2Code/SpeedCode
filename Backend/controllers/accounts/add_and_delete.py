@@ -48,7 +48,7 @@ def sign_in():
 
     # 登陆成功
     # 更新 AccessToken
-    if not verify_access_token(entity.access_token, entity.uuid):
+    if not verify_access_token(entity.access_token, entity) or entity.access_token == "" or entity.access_token is None:
 
         # 需要更新
         access = summon_new_access_token(entity)
@@ -219,7 +219,7 @@ def get_account_detail():
                 "status_code": "PASSED"
             }
 
-    elif Account.query.filter_by(uuid=objective).first() is not None:
+    elif objective is not None and Account.query.filter_by(uuid=objective).first() is not None:
         entity = Account.query.filter_by(uuid=objective).first()
 
         return {
@@ -236,10 +236,9 @@ def get_account_detail():
             "status_code": "PASSED"
         }
 
-    else:
-        return {
-            "status": "failed",
-            "status_code": "FAILED",
-            "reason": "cannot get objective user entity",
-            "reason_code": "WRODAT"
-        }
+    return {
+        "status": "failed",
+        "status_code": "FAILED",
+        "reason": "cannot get objective user entity",
+        "reason_code": "WRODAT"
+    }

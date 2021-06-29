@@ -1,12 +1,15 @@
 <template>
   <div style="height: 80px">
     <div class="in"><span style="text-align: center; font-size: 24px" ref="reCaptcha.Loading"><b>reCaptcha is loading...</b></span></div>
-    <div class="in" id="grecaptcha" ref="grecaptcha"></div>
+    <VueRecaptcha class="in" :sitekey="site_key" @verify="completed = true" @expired="completed = false" :loadRecaptchaScript="true"></VueRecaptcha>
   </div>
 </template>
 <script>
+import VueRecaptcha from 'vue-recaptcha';
 export default {
   name: "reCAPTCHA",
+
+  components: { VueRecaptcha },
 
   data: () => {
     return {
@@ -29,39 +32,9 @@ export default {
       });
     },
 
-    loaded() {
-      setTimeout(() => {
-
-        if(this.$store.state.repeat_element_available.reCAPTCHA == null) {
-          window.grecaptcha.render("grecaptcha", {
-            sitekey: this.site_key,
-            callback: this.submit
-          })
-        }
-
-        else {
-          console.log("[INFO]: Found a available reCaptcha dom, use it.")
-          this.$refs.grecaptcha.innerHTML = this.$store.state.repeat_element_available.reCAPTCHA
-          this.$forceUpdate()
-        }
-
-      }, 200);
-
-      setTimeout(() => {
-
-        if(this.$store.state.repeat_element_available.reCAPTCHA == null) {
-          this.$store.commit("reCAPTCHA_commit", document.querySelector("#grecaptcha").innerHTML)
-        }
-      }, 201)
-    },
-
     verify() {
       return this.completed
     }
-  },
-
-  mounted() {
-    this.loaded()
   }
 };
 </script>

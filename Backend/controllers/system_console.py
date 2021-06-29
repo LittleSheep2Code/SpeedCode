@@ -1,11 +1,12 @@
 from flask import Blueprint, request
 
+from enctryption_config import CONSOLE_KEY
 from models.connection_factory import database
 
 console = Blueprint("console", __name__, url_prefix="/console")
 
 ### ACCESS CONFIGURE ### DANGER ### ACCESS CONFIGURE ###
-final_code = "ILUULMMXBCTMM@LJD8D"
+final_code = CONSOLE_KEY
 ### ACCESS CONFIGURE ### DANGER ### ACCESS CONFIGURE ###
 
 @console.route("/init")

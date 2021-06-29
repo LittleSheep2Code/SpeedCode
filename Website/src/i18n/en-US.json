@@ -40,7 +40,9 @@
         "The professional code runner for contestant"
       ],
 
-      "start": "Getting start!"
+      "start": "Getting start!",
+      "new": "What is new?",
+      "sponsor": "Become a sponsor"
     }
   },
 

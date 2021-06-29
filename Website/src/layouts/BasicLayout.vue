@@ -44,7 +44,7 @@
       <!--  Doesn't login avatar    -->
       <v-menu offset-y bottom v-if="selectAccounts.access == null" open-on-hover>
         <template v-slot:activator="{ on, attrs }">
-          <v-avatar class="mr-10" color="blue-grey darken-1" size="32px" v-bind="attrs" v-on="on" tile><v-icon color="white">mdi-account</v-icon></v-avatar>
+          <v-avatar class="mr-10" color="secondary lighten-3" size="32px" v-bind="attrs" v-on="on" tile><v-icon color="grey darken-1">mdi-account</v-icon></v-avatar>
         </template>
 
         <v-list class="text-right" dense>
@@ -56,7 +56,9 @@
       <!--  Completed login avatar    -->
       <v-menu offset-y bottom v-else open-on-hover>
         <template v-slot:activator="{ on, attrs }">
-          <v-avatar class="mr-10" color="orange darken-1" size="32px" v-bind="attrs" v-on="on" tile>{{ selectAccounts.iusername }}</v-avatar>
+          <v-avatar color="secondary lighten-3" class="mr-10 text--secondary text--darken-1" size="32px" v-bind="attrs" v-on="on" tile>
+            {{ selectAccounts.iusername }}
+          </v-avatar>
         </template>
 
         <v-list class="text-right" dense>

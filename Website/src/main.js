@@ -1,10 +1,10 @@
-import Vue from 'vue'
-import Axios from 'axios'
-import App from './App.vue'
-import router from './router'
-import store from './store'
-import i18n from './i18n'
-import vuetify from './plugins/vuetify'
+import Vue from "vue"
+import Axios from "axios"
+import App from "@/App.vue"
+import router from "@/router"
+import store from "@/store"
+import i18n from "@/i18n"
+import vuetify from "@/plugins/vuetify"
 
 Axios.defaults.headers = {
   "Access-Control-Allow-Origin": "*",
@@ -13,15 +13,15 @@ Axios.defaults.headers = {
   "Access-Control-Allow-Credentials": true
 }
 
-import VueCookies from 'vue-cookies'
+import VueCookies from "vue-cookies"
 Vue.use(VueCookies)
 
-import VuetifyDialog from 'vuetify-dialog'
-import 'vuetify-dialog/dist/vuetify-dialog.css'
+import VuetifyDialog from "vuetify-dialog"
+import "vuetify-dialog/dist/vuetify-dialog.css"
 Vue.use(VuetifyDialog, { context: { vuetify } })
 
 import VueCodemirror from "vue-codemirror";
-import 'codemirror/lib/codemirror.css'
+import "@/styles/codemirror.css"
 Vue.use(VueCodemirror)
 
 Axios.interceptors.response.use((response) => {
@@ -61,4 +61,4 @@ new Vue({
   i18n,
   vuetify,
   render: h => h(App)
-}).$mount('#app')
+}).$mount("#app")
