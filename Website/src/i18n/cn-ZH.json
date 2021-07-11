@@ -126,7 +126,7 @@
       "settings": "设置",
       "clear": "清除代码",
       "runtime": "F9(跳过设置)",
-      "save": "F4(保存)",
+      "save": "Control/Ctrl+S(保存)",
 
       "status": {
         "unsaved": "未保存",

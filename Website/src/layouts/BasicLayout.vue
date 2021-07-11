@@ -137,6 +137,10 @@ export default {
           this.selectAccounts.state = res.data["information"]["state"]
         })
       }
+      
+      if(this.$cookies.get("language") != null) {
+        this.$i18n.locale = this.$cookies.get("language")
+      }
 
       this.$forceUpdate()
     }
@@ -163,6 +167,12 @@ export default {
       { icon: "mdi-content-save-edit", title: i18n.t("navigator.menu.code-runner"), component: "/utils/editor" }
     ]
   }),
+
+  watch: {
+    "$i18n.locale": function(value, old) {
+      this.$cookies.set("language", value)
+    }
+  }
 }
 </script>
 

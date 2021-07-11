@@ -10,7 +10,7 @@
           <div style="margin-top: 30px">
             <div>
               <h4 class="config-subtitle">{{ $t("editor.Runtime.Settings.stdin") }}</h4>
-              <v-textarea auto-grow outlined dense clearable v-model="runtime_config.stdin"></v-textarea>
+              <v-textarea class="pre-textarea" auto-grow outlined dense clearable v-model="runtime_config.stdin"></v-textarea>
             </div>
           </div>
 
@@ -32,23 +32,23 @@
           <div style="margin-top: 25px">
             <div v-show="result_content['stdout']">
               <h4 class="result-title">{{ $t("editor.Runtime.Result.stdout") }}</h4>
-              <v-textarea dense :value="result_content['stdout']" auto-grow outlined readonly></v-textarea>
+              <v-textarea dense class="pre-textarea" :value="result_content['stdout']" auto-grow outlined readonly></v-textarea>
             </div>
             <div v-show="result_content['stderr']">
               <h4 class="result-title">{{ $t("editor.Runtime.Result.stderr") }}</h4>
-              <v-textarea dense :value="result_content['stderr']" auto-grow outlined readonly></v-textarea>
+              <v-textarea dense class="pre-textarea" value="result_content['stderr']" auto-grow outlined readonly></v-textarea>
             </div>
             <div v-show="result_content['compile_output']">
               <h4 class="result-title">{{ $t("editor.Runtime.Result.compile-error") }}</h4>
-              <v-textarea dense :value="result_content['compile_output']" auto-grow outlined readonly></v-textarea>
+              <v-textarea dense class="pre-textarea" :value="result_content['compile_output']" auto-grow outlined readonly></v-textarea>
             </div>
             <div>
               <h4 class="result-title">{{ $t("editor.Runtime.Result.memory") }}</h4>
-              <v-text-field dense :value="result_content['memory']" outlined readonly></v-text-field>
+              <v-text-field dense class="pre-textarea" :value="result_content['memory']" outlined readonly></v-text-field>
             </div>
             <div>
               <h4 class="result-title">{{ $t("editor.Runtime.Result.time") }}</h4>
-              <v-text-field dense :value="result_content['time']" outlined readonly></v-text-field>
+              <v-text-field dense class="pre-textarea" :value="result_content['time']" outlined readonly></v-text-field>
             </div>
           </div>
         </v-card-text>
@@ -81,7 +81,6 @@ export default {
           timeout: 3000
         })
 
-        this.$emit("save-require")
         this.execute_script()
       }
 
@@ -105,8 +104,13 @@ export default {
   methods: {
     execute_script() {
 
+      // Save editor code
+      this.$emit("save")
+
+      // Create the from data
       let data = new FormData()
 
+      // Code is null warning
       if(this.$cookies.get("editor-code") == null) {
         this.$dialog.notify.warning(i18n.t("editor.Runtime.null-code"), {
           position: "top-right",
@@ -116,15 +120,14 @@ export default {
         return
       }
 
+      // Default Runtime
       if(this.$cookies.get("editor-config")["runtime"] == null)
-        data.set("language", "C_GCC_9")
+        data.set("language", "CPP_GPP_9")
 
+      // Set data to from data object
       data.set("source", this.$cookies.get("editor-code"))
       data.set("language", this.$cookies.get("editor-config")["runtime"])
-
-      if(this.stdin != null || this.stdin !== "") {
-        data.set("stdin", this.stdin)
-      }
+      data.set("stdin", this.runtime_config.stdin)
 
       this.wait = true
       this.axios.post("/s-code/program-runner", data).then(response => {
@@ -174,5 +177,9 @@ export default {
   font-size: 15px;
   font-weight: bold;
   margin-bottom: 2px;
+}
+
+.pre-textarea {
+  font-family: "CodeNewRoram", "Monospace", "Roboto", "Helvetica";
 }
 </style>

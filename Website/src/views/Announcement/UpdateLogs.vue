@@ -12,6 +12,18 @@
             <div style="margin-top: 30px">
               <div>
                 <div class="h3" style="margin-bottom: 8px; width: 100%">
+                  <span class="text-left">SpeedCode v2.0.3</span>
+                </div>
+                <v-divider></v-divider>
+
+                <div style="padding-left: 5px; font-size: 16px; margin-top: 8px">
+                  <span>+ &nbsp; Add settings reset</span> <br>
+                  <span>= &nbsp; Fixed cannot using stdin bugs</span> <br>
+                </div>
+              </div>
+
+              <div class="next">
+                <div class="h3" style="margin-bottom: 8px; width: 100%">
                   <span class="text-left">SpeedCode v2.0.2</span>
                 </div>
                 <v-divider></v-divider>

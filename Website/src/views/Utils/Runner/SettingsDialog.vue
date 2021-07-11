@@ -17,6 +17,12 @@
           </div>
 
           <div>
+            <h4 class="config-subtitle">{{ $t("editor.Settings.Editor.theme") }}</h4>
+            <v-select dense outlined v-model="config.settings.theme" :items="config.data.available_theme" return-object single-line
+                      item-text="state" item-value="abbr"></v-select>
+          </div>
+
+          <div>
             <h4 class="config-subtitle">{{ $t("editor.Settings.Editor.tabsize") }}</h4>
             <v-text-field type="number" validate-on-blur :rules="[value => value >= 0 || 'Minimum is 0']" dense outlined v-model="config.settings.tabsize"
                           @change="verify"></v-text-field>
@@ -37,9 +43,17 @@
           <h3 class="config-title">{{ $t("editor.Settings.autosave") }}</h3>
 
           <div>
-            <h4 class="config-subtitle">{{ $t("editors.Settings.Autosave.delay") }}</h4>
+            <h4 class="config-subtitle">{{ $t("editor.Settings.Autosave.delay") }}</h4>
             <v-text-field type="number" validate-on-blur :rules="[value => value >= 0 || 'Minimum is 0']" dense outlined v-model="config.settings.autosave_delay"
                           @change="verify"></v-text-field>
+          </div>
+        </div>
+
+        <div>
+          <h3 class="config-subtitle">{{ $t("editor.Settings.reset") }}</h3>
+
+          <div>
+            <v-btn text block color="error" @click="reset_configure">{{ $t("editor.Settings.Reset.info") }} &nbsp; <v-icon>mdi-reload</v-icon></v-btn>
           </div>
         </div>
       </v-card-text>
@@ -63,11 +77,16 @@ export default {
       settings: {
         language: "javascript",
         runtime: "NODE_JS",
-        tabsize: 4,
+        theme: "idea",
+        tabsize: 2,
         autosave_delay: 10000
       },
 
       data: {
+        available_theme: [
+          { state: 'Light Idea(Default)', abbr: 'idea' }
+        ],
+
         available_language: [
           { state: 'Javascript', abbr: 'javascript' },
           { state: 'Python', abbr: 'x-python' },
@@ -106,7 +125,6 @@ export default {
   },
 
   methods: {
-
     configure_loader() {
       let config = this.$cookies.get("editor-config")
 
@@ -130,12 +148,38 @@ export default {
       if(this.config.settings.language.abbr != null)
         this.config.settings.language = this.config.settings.language.abbr
 
+      if(this.config.settings.theme.abbr != null)
+        this.config.settings.theme = this.config.settings.theme.abbr
+
       this.$cookies.set("editor-config", this.config.settings)
       this.$emit("complete")
     },
 
     update_v_model($event) {
       this.$emit("input", $event)
+    },
+
+    reset_configure() {
+      this.$dialog.warning({
+        text: "You really wanna reset all config of editor?",
+        title: "Confirm",
+        showClose: false
+      }).then(status => {
+        if(status) {
+          console.log("[SETTINGS] ALL CONFIGURE IS RESET!")
+          this.update_v_model(false)
+          this.config.settings = {
+            language: "javascript",
+            runtime: "NODE_JS",
+            theme: "idea",
+            tabsize: 2,
+            autosave_delay: 10000
+          }
+
+          this.$cookies.remove("editor-config")
+          this.$emit("completed")
+        }
+      })
     }
   },
 }

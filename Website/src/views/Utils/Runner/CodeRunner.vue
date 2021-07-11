@@ -5,12 +5,13 @@
                   ref="editor" :options="editor_configs.configs" v-model="editor_configs.value" ></codemirror>
     </div>
 
-    <EditorFooter ref="footer" @reload="configure_loader" @save-require="save_editor_code"></EditorFooter>
+    <EditorFooter ref="footer" @reload="configure_loader" @save="save_editor_code"></EditorFooter>
   </div>
 </template>
 
 <script>
-import EditorFooter from "@/components/LayoutsComponents/Footers/EditorFooter";
+import i18n from "@/i18n"
+import EditorFooter from "@/components/LayoutsComponents/Footers/EditorFooter"
 
 import 'codemirror/mode/javascript/javascript.js'
 import 'codemirror/mode/clike/clike.js'
@@ -59,7 +60,7 @@ export default {
     autosave_interval: undefined,
     editor_configs: {
       configs: {
-        tabSize: 4,
+        tabSize: 2,
         styleActiveLine: false,
         lineNumbers: true,
         styleSelectedText: false,
@@ -77,7 +78,7 @@ export default {
         matchBrackets: true,
         showCursorWhenSelecting: true,
         theme: "idea",
-        extraKeys: { "Ctrl+Q": "autocomplete" }
+        extraKeys: { "Alt": "autocomplete" }
       },
 
       value: "",
@@ -87,7 +88,7 @@ export default {
     autosave_config: {
       last_save: {
         content: ""
-      },
+      }
     }
   }),
 
@@ -127,6 +128,13 @@ export default {
 
       else {
 
+        this.$cookies.set("editor-config", {
+          language: "javascript",
+            runtime: "NODE_JS",
+            tabsize: 4,
+            autosave_delay: 10000
+        })
+
         // Doesn't config autosave setup
         this.autosave_interval = setInterval(this.save_editor_code, 10000)
       }
@@ -146,6 +154,12 @@ export default {
 
   mounted() {
     this.configure_loader()
+  },
+
+  beforeDestroy() {
+
+    // Save the code
+    this.save_editor_code()
   }
 }
 </script>
