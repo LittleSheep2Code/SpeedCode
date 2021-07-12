@@ -2,6 +2,7 @@
   "application": "SpeedCode",
 
   "navigator": {
+    "leave-page-alert": "你确定要离开该页面吗？该页面的数据尚未保存！",
     "close-menu": "关闭",
 
     "menu": {
@@ -13,8 +14,8 @@
   "normal": {
     "actions": {
       "confirm": "确认?",
-      "next": "下一个",
-      "again": "再来",
+      "next": "下一步",
+      "again": "从头来过",
 
       "cancel": "取消",
       "run": "运行"
@@ -40,12 +41,14 @@
         "给竞赛者的专业代码运行器"
       ],
 
-      "start": "开始吧!"
+      "start": "开始吧!",
+      "new": "更新了什么？",
+      "sponsor": "成为一个赞助者"
     }
-  },
+
 
   "update-logs": {
-    "notfound": "这里啥也没有！"
+    "notfound": "这里空空如也"
   },
 
   "user-management": {
@@ -89,13 +92,13 @@
       ],
 
       "messages": {
-        "completed": "<span style='font-size: 24px'><b>完成!</b></span><br>现在可以用邮箱登录.",
+        "completed": "<span style='font-size: 24px'><b>完成!</b></span><br>现在您可以用您的邮箱 / 用户名登录了！",
 
         "wrong-username": "用户名必须是字母,数字和下划线组成,长度大于 4 个字符.",
-        "wrong-email": "你输入的邮箱格式错误.",
+        "wrong-email": "您输入的邮箱格式错误.",
         "wrong-email-code": "输入错误,请检查邮件验证码.",
         "repeat-username": "用户名重复了",
-        "repeat-email": "你的邮箱已经注册了2个账号,请用其他邮箱注册"
+        "repeat-email": "您的邮箱已经注册了2个账号，请用其他邮箱注册"
       }
     },
 
@@ -106,7 +109,7 @@
       },
 
       "messages": {
-        "completed": "设置完成,账号现在已经激活了",
+        "completed": "设置完成，账号现在已经激活了",
 
         "wrong-activate": "请注入正确的激活码!"
       }
@@ -116,7 +119,7 @@
       "text": "你要登出吗?",
       "messages": {
         "completed": "登出完成!",
-        "verify-failed": "你的会话结束,安全登出."
+        "verify-failed": "您的登录会话超时，安全登出."
       }
     }
   },
@@ -135,7 +138,7 @@
 
       "Clear": {
         "title": "你确认要清楚所有代码?",
-        "text": "该操作不可撤消 Ctrl+Z / Command+Z"
+        "text": "该操作不可撤消！"
       }
     },
 
@@ -143,10 +146,11 @@
       "editor": "编辑器",
       "Editor": {
         "language": "语言",
-        "tabsize": "缩进尺寸"
+        "tabsize": "缩进尺寸",
+        "theme": "主题"
       },
 
-      "runtime": "运行库",
+      "runtime": "运行时",
       "Runtime": {
         "environment": "运行环境"
       },

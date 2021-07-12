@@ -17,8 +17,9 @@
                 <v-divider></v-divider>
 
                 <div style="padding-left: 5px; font-size: 16px; margin-top: 8px">
-                  <span>+ &nbsp; Add settings reset</span> <br>
-                  <span>= &nbsp; Fixed cannot using stdin bugs</span> <br>
+                  <span>+ &nbsp; Add settings reset button</span> <br>
+                  <span>+ &nbsp; Add Theme change select</span> <br>
+                  <span>= &nbsp; All bugs we know</span> <br>
                 </div>
               </div>
 
