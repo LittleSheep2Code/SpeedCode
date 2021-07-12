@@ -9,6 +9,7 @@ flask-sqlalchemy = "*"
 pyjwt = "*"
 requests = "*"
 gunicorn = "*"
+pillow = "*"
 
 [dev-packages]
 

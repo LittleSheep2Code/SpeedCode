@@ -50,7 +50,7 @@
 
     <!--  Dialogs   -->
     <SettingsDialog v-model="dialogs.settings" width="600px" @complete="setting_change"></SettingsDialog>
-    <RuntimeDialog v-model="dialogs.application" width="600px" ref="runtime"></RuntimeDialog>
+    <RuntimeDialog v-model="dialogs.application" width="600px" @save="$emit('save')" ref="runtime"></RuntimeDialog>
   </div>
 </template>
 
@@ -63,7 +63,7 @@ export default {
   name: "EditorFooter",
   components: { RuntimeDialog, SettingsDialog },
   data: () => ({
-    u_runtime: "C GCC 9",
+    u_runtime: "CPP GPP 9",
     save_state: true,
 
     dialogs: {
@@ -74,8 +74,8 @@ export default {
 
   created() {
     window.addEventListener('keydown', (event) => {
-      if(event.key === "F4") {
-        this.$emit("save-require")
+      if(event.ctrlKey && event.key === "s") {
+        this.$emit("save")
       }
     });
   },

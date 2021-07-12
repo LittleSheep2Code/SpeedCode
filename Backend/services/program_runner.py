@@ -1,3 +1,5 @@
+import base64
+import json
 from time import sleep
 
 from requests import post, get
@@ -83,8 +85,20 @@ class program_runner(object):
 
         while True:
             sleep(0.5)
-            response = get(JUDGE0_API + "/submissions/" + mission_id)
+            response = get(JUDGE0_API + "/submissions/" + mission_id + "?base64_encoded=true")
             response_json = response.json()
+
+            for key, value in response_json.items():
+                try:
+                    if type(value) == str and key != "token" and key != "time":
+                        base64.b64decode(value)
+                    else:
+                        continue
+                except:
+                    continue
+
+                response_json[key] = base64.b64decode(value).decode("utf-8")
+
 
             if response_json["status"]["id"] != 1 and response_json["status"]["id"] != 2:
                 break

@@ -2,6 +2,7 @@
   "application": "SpeedCode",
 
   "navigator": {
+    "leave-page-alert": "You sure want leave this page? The data of this page isn't save.",
     "close-menu": "Close",
 
     "menu": {
@@ -40,7 +41,9 @@
         "The professional code runner for contestant"
       ],
 
-      "start": "Getting start!"
+      "start": "Getting start!",
+      "new": "What is new?",
+      "sponsor": "Become a sponsor"
     }
   },
 
@@ -126,7 +129,7 @@
       "settings": "Settings",
       "clear": "Clear Codes",
       "runtime": "F9(Skip Configure)",
-      "save": "F4(Save)",
+      "save": "Control/Ctrl+S(Save)",
 
       "status": {
         "unsaved": "Unsaved",
@@ -143,7 +146,8 @@
       "editor": "Editor",
       "Editor": {
         "language": "Language",
-        "tabsize": "Tabsize"
+        "tabsize": "Tabsize",
+        "theme": "Theme"
       },
 
       "runtime": "Runtime",
@@ -154,6 +158,11 @@
       "autosave": "Automatic Save",
       "Autosave": {
         "delay": "Save Delay(ms)"
+      },
+
+      "reset": "Reset Settings",
+      "Reset": {
+        "info": "Reset"
       }
     },
 

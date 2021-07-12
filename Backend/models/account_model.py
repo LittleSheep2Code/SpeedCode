@@ -7,6 +7,7 @@ class Account(database.Model):
     email = database.Column(database.String)
     username = database.Column(database.String)
     password = database.Column(database.String)
+    avatar = database.Column(database.String, default=None)
 
     access_token = database.Column(database.String)
     mail_access_code = database.Column(database.String)

@@ -38,7 +38,7 @@ def run_program():
 
     return {
         "status": "completed",
-        "information": information,
+        "information": dict(information),
         "status_code": "PASSED"
     }
 

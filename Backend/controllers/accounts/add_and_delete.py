@@ -2,8 +2,11 @@ import datetime
 import re
 from uuid import uuid1
 
-from flask import Blueprint, request, render_template
+from flask import Blueprint, request, render_template, Response
+from io import BytesIO
+from PIL import Image
 
+from common.authorization import access_require
 from common.authorization.jwt_management import *
 from common.email_sender import send_email
 from controllers.accounts.high_permission_authization import summon_email_authorization_code
@@ -48,7 +51,7 @@ def sign_in():
 
     # 登陆成功
     # 更新 AccessToken
-    if not verify_access_token(entity.access_token, entity.uuid):
+    if not verify_access_token(entity.access_token, entity) or entity.access_token == "" or entity.access_token is None:
 
         # 需要更新
         access = summon_new_access_token(entity)
@@ -219,7 +222,7 @@ def get_account_detail():
                 "status_code": "PASSED"
             }
 
-    elif Account.query.filter_by(uuid=objective).first() is not None:
+    elif objective is not None and Account.query.filter_by(uuid=objective).first() is not None:
         entity = Account.query.filter_by(uuid=objective).first()
 
         return {
@@ -236,10 +239,44 @@ def get_account_detail():
             "status_code": "PASSED"
         }
 
-    else:
+    return {
+        "status": "failed",
+        "status_code": "FAILED",
+        "reason": "cannot get objective user entity",
+        "reason_code": "WRODAT"
+    }
+
+@account_add_delete.get("/avatar")
+@access_require()
+def get_account_avatar():
+
+    entity = Account.query.filter_by(access_token=request.headers.get("access_token")).first()
+    if entity.avatar is None:
         return {
-            "status": "failed",
-            "status_code": "FAILED",
-            "reason": "cannot get objective user entity",
-            "reason_code": "WRODAT"
+            "status": "completed",
+            "information": entity.username[0],
+            "status_code": "UNDFID"
         }
+
+    else:
+        image = BytesIO()
+        Image.open(BytesIO(entity.avatar)).save(image, format("PNG"))
+
+        return Response(image, mimetype="image/jpeg")
+
+@account_add_delete.post("/avatar/set")
+@access_require()
+def set_account_avatar():
+
+    image = request.files.get("file")
+    if image is None:
+        return {
+                   "status": "request denied",
+                   "status_code": "REQDID",
+                   "reason": "cannot load payload, require a image payload",
+                   "reason_code": "PAYERR"
+               }, 400
+
+    Account.query.filter_by(access_token=request.headers.get("access_token")).update({"avatar": image.stream})
+    database.session.commit()
+

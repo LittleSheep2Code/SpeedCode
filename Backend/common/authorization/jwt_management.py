@@ -13,7 +13,7 @@ def summon_new_access_token(instance: Account):
     payload = dict(exp=time.time() + 172800)
     payload.update({"uuid": instance.uuid, "username": instance.username})
 
-    access = jwt.encode(payload, instance.password, "HS256")
+    access = jwt.encode(payload=payload, key=instance.password, algorithm="HS256")
 
     # Commit
     Account.query.filter_by(uuid=instance.uuid).update({ "access_token": access })
@@ -22,29 +22,27 @@ def summon_new_access_token(instance: Account):
     # Return
     return access
 
-def verify_access_token(access: str, uuid: str=None):
+def verify_access_token(access: str, entity_data):
     data = {}
 
     # Decode access token and verify
     try:
-        data = jwt.decode(access, uuid, True, algorithm='HS256')
+        data = jwt.decode(jwt=access, key=entity_data.password, algorithms='HS256')
 
     # Access token wrong or timeout
-    except Exception:
+    except Exception as e:
         return False
 
     # Access token is right
     finally:
-        if (uuid is None or data.get("uuid") == uuid) and Account.query.filter_by(uuid=data.get("uuid")).first() is not None:
-            entity = Account.query.filter_by(uuid=data.get("uuid"))
+        if (entity_data.uuid is None or data.get("uuid") == entity_data.uuid) and Account.query.filter_by(uuid=data.get("uuid")).first() is not None:
+
+            entity = Account.query.filter_by(uuid=data.get("uuid")).first()
 
             if entity.access_token != access:
                 return False
 
-            return True
-
-        else:
-            return False
+        return True
 
 
 def password_process(source: str):
