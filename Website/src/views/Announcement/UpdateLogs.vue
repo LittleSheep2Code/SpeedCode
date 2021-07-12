@@ -24,7 +24,7 @@
               </div>
 
               <div class="next">
-                <div class="h3" style="margin-bottom: 8px; width: 100%">
+                <div class="h3" style="margin-botton: 8px; width: 100%">
                   <span class="text-left">SpeedCode v2.0.2</span>
                 </div>
                 <v-divider></v-divider>

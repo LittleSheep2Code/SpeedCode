@@ -38,7 +38,11 @@
   "index": {
     "description": {
       "list": [
-        "The professional code runner for contestant"
+        "The professional code runner for contestant",
+        "Why I do this?",
+        "Because I am a contestant myself<br>I want another place where contestants can quickly run the program and save the program<br>",
+        "So you don’t have to configure the operating environment yourself<br>I hope you can also get your own convenience here",
+        "Our Sponsors"
       ],
 
       "start": "Getting start!",

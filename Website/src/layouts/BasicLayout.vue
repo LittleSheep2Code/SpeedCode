@@ -1,6 +1,6 @@
 <template>
   <v-app>
-    <v-navigation-drawer v-model="isNavigationOpen" app class="secondary lighten-2" fixed elevate-on-scroll>
+    <v-navigation-drawer v-model="isNavigationOpen" app class="secondary lighten-2" fixed>
       <v-list nav dense>
         <v-list-item v-for="(item, index) in navigatorItems" :key="index" :disabled="$route.path === item.component" @click="$router.push(item.component)" link>
 
@@ -23,7 +23,7 @@
       </template>
     </v-navigation-drawer>
 
-    <v-app-bar app color="secondary lighten-3" flat>
+    <v-app-bar app color="secondary lighten-3" elevate-on-scroll>
       <v-app-bar-nav-icon @click="isNavigationOpen = !isNavigationOpen"></v-app-bar-nav-icon>
       <v-app-bar-title>{{ $t("application") }}</v-app-bar-title>
 
@@ -132,12 +132,13 @@ export default {
             this.reload_all_information()
           }
 
+          this.selectAccounts.permission = res.data["information"]["permission"]
           this.selectAccounts.username = res.data["information"]["username"]
           this.selectAccounts.iusername = res.data["information"]["username"].substr(0, 1)
           this.selectAccounts.state = res.data["information"]["state"]
         })
       }
-      
+
       if(this.$cookies.get("language") != null) {
         this.$i18n.locale = this.$cookies.get("language")
       }
@@ -157,6 +158,7 @@ export default {
       access: undefined,
       username: undefined,
       iusername: undefined,
+      permission: undefined,
       state: undefined
     },
 

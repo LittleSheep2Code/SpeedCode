@@ -2,7 +2,7 @@
   <div class="fill-height" style="width: 100%">
     <div class="fill-height" style="width: 100%">
       <codemirror id="code-editor" @ready="register_editor_autocomplete" @changes="$refs['footer'].update_save_state(false)"
-                  ref="editor" :options="editor_configs.configs" v-model="editor_configs.value" ></codemirror>
+                  ref="editor" :options="editor_configs.configs" v-model="editor_configs.value"></codemirror>
     </div>
 
     <EditorFooter ref="footer" @reload="configure_loader" @save="save_editor_code"></EditorFooter>
@@ -10,7 +10,6 @@
 </template>
 
 <script>
-import i18n from "@/i18n"
 import EditorFooter from "@/components/LayoutsComponents/Footers/EditorFooter"
 
 import 'codemirror/mode/javascript/javascript.js'
@@ -57,6 +56,10 @@ export default {
   components: { EditorFooter },
 
   data: () => ({
+    file_list: {
+      show: true
+    },
+
     autosave_interval: undefined,
     editor_configs: {
       configs: {
