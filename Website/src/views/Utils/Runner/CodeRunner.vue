@@ -32,7 +32,7 @@
 
     <FileTreeDialog v-model="dialogs.filetree" width="600px" :files="file_manifest.files" @create="create_file" @render="render_file"
                     @remove="remove_file"></FileTreeDialog>
-    <EditorFooter ref="footer" :config="file_manifest.openconfig" :source="editor_configs.value" @reload="configure_loader" @save="save_editor_code"></EditorFooter>
+    <EditorFooter ref="footer" :config="file_manifest.openconfig" :source="editor_configs.value" :null="is_null" @reload="configure_loader" @save="save_editor_code"></EditorFooter>
   </div>
 </template>
 
@@ -87,6 +87,8 @@ export default {
     dialogs: {
       filetree: false
     },
+
+    is_null: true,
 
     file_manifest: {
       files: [],
@@ -158,6 +160,11 @@ export default {
     configure_loader(payload) {
       if(payload != null && typeof payload === "object") {
         this.file_manifest.openconfig = payload
+
+        let file_id = this.file_manifest.open_files[this.file_manifest.openindex].file_id
+        this.file_manifest.files[file_id].config = payload
+        this.file_manifest.open_files[this.file_manifest.openindex].config = payload
+        this.save_editor_files()
       }
 
       let config = this.$cookies.get("editor-config")
@@ -190,6 +197,7 @@ export default {
 
         setTimeout(() => {
           this.$refs["footer"].update_save_state(true)
+          this.$refs["footer"].update_state()
         }, 10)
       }
     },
@@ -226,16 +234,24 @@ export default {
 
     close_file(item) {
       this.file_manifest.open_files = this.file_manifest.open_files.filter(i => i.name !== item.name)
-      this.rerender_content(item.file_id + 1)
+
+      if(this.file_manifest.open_files.lenght > 1)
+        this.file_manifest.openindex--
+
+      else if(this.file_manifest.open_files.lenght > 0)
+        this.file_manifest.openindex = 0
+
+      else
+        this.file_manifest.openindex = undefined
     },
 
     rerender_content(file_id) {
       this.save_editor_files()
 
       // 所有标签已经关闭
-      if(file_id === undefined) {
-        this.file_manifest.openfile = null
-        this.file_manfiest.openconfig = undefined
+      if(file_id == null) {
+        this.file_manifest.openfile = undefined
+        this.file_manifest.openconfig = undefined
         this.editor_configs.value = ""
         this.autosave_config.last_save.content = ""
       }
@@ -251,14 +267,17 @@ export default {
 
   watch: {
     "file_manifest.openindex": function(value) {
-      let file_id = this.file_manifest.open_files[value].file_id
-      this.rerender_content(file_id)
-    },
+      if(value != null) {
+        let file_id = this.file_manifest.open_files[value].file_id
+        this.rerender_content(file_id)
+        this.is_null = false
+      }
 
-    "file_manifest.openconfig": function(value) {
-      this.file_manifest.files[file_id].config = value
-      this.save_editor_files()
-    }
+      else {
+        this.rerender_content(null)
+        this.is_null = true
+      }
+    },
   },
 
   mounted() {

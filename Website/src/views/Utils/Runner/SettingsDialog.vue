@@ -13,7 +13,7 @@
             <h4 class="config-subtitle">{{ $t("editor.Settings.Editor.language") }}</h4>
             <v-select dense outlined v-model="bconfig.language" :items="gconfig.data.available_language" return-object single-line
                       @change="config.settings.runtime = translator.go(config.settings.language.abbr)"
-                      item-text="state" item-value="abbr" :disabled="this.bconfig.language == null"></v-select>
+                      item-text="state" item-value="abbr" :disabled="this.bconfig.language == null || bdisable"></v-select>
           </div>
 
           <div>
@@ -35,7 +35,7 @@
           <div>
             <h4 class="config-subtitle">{{ $t("editor.Settings.Runtime.environment") }}</h4>
             <v-select dense outlined v-model="bconfig.runtime" :items="gconfig.data.available_runtime" return-object single-line
-                      item-text="state" item-value="abbr" :disabled="this.bconfig.runtime == null"></v-select>
+                      item-text="state" item-value="abbr" :disabled="this.bconfig.runtime == null || bdisable"></v-select>
           </div>
         </div>
 
@@ -73,6 +73,7 @@ export default {
   data: () => ({
     translator: Translator,
     display: false,
+    bdisable: false,
     gconfig: {
       settings: {
         theme: "idea",
@@ -99,7 +100,8 @@ export default {
   props: {
     value: Boolean,
     width: String,
-    config: Object
+    config: Object,
+    disable: Boolean
   },
 
   watch: {
@@ -108,7 +110,11 @@ export default {
     },
 
     config() {
-      this.bconfig = this.config
+      if(this.config != null) this.bconfig = this.config
+    },
+
+    disable() {
+      this.bdisable = this.disable
     }
   },
 
@@ -130,17 +136,23 @@ export default {
     },
 
     update_data() {
-      if(this.bconfig.runtime.abbr != null)
-        this.bconfig.runtime = this.config.runtime.abbr
+      if(this.config != null) {
+        if(this.bconfig.runtime.abbr != null)
+          this.bconfig.runtime = this.config.runtime.abbr
 
-      if(this.config.language.abbr != null)
-        this.config.language = this.config.language.abbr
+        if(this.bconfig.language.abbr != null)
+          this.bconfig.language = this.bconfig.language.abbr
+      }
 
-      if(this.config.settings.theme.abbr != null)
-        this.config.settings.theme = this.config.settings.theme.abbr
+      if(this.gconfig.settings.theme.abbr != null)
+        this.gconfig.settings.theme = this.gconfig.settings.theme.abbr
 
-      this.$cookies.set("editor-config", this.config.settings)
-      this.$emit("complete", this.bconfig)
+      this.$cookies.set("editor-config", this.gconfig.settings)
+
+      if(this.config != null && typeof this.config === "object")
+        this.$emit("complete", this.bconfig)
+      else
+        this.$emit("complete")
     },
 
     update_v_model($event) {

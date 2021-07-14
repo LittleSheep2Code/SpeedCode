@@ -34,6 +34,7 @@
                   <span>+ &nbsp; Add Theme change select</span> <br>
                   <span>= &nbsp; All bugs we know</span> <br>
                 </div>
+              </div>
 
               <div class="next">
                 <div class="h3" style="margin-botton: 8px; width: 100%">

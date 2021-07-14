@@ -29,7 +29,7 @@ export default class Translator {
       case "x-python":
         return "PYTHON_3";
       case "x-csrc":
-        return "C_GCC_9";
+        return "CPP_GPP_9";
       case "x-c++rc":
         return "CPP_GPP_9";
       case "x-csharp":

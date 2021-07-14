@@ -49,7 +49,7 @@
     </v-footer>
 
     <!--  Dialogs   -->
-    <SettingsDialog v-model="dialogs.settings" :config="config" width="600px" @complete="setting_change"></SettingsDialog>
+    <SettingsDialog v-model="dialogs.settings" :config="config" width="600px" :disable="!null" @complete="setting_change"></SettingsDialog>
     <RuntimeDialog v-model="dialogs.application" :config="config" :content="source" width="600px" @save="$emit('save')" ref="runtime"></RuntimeDialog>
   </div>
 </template>
@@ -74,7 +74,8 @@ export default {
 
   props: {
     config: Object,
-    source: String
+    source: String,
+    null: Boolean
   },
 
   created() {
@@ -105,12 +106,17 @@ export default {
 
     update_save_state(state) {
       this.save_state = state
+    },
+
+    update_state() {
+      if(this.config != null)
+        this.u_runtime = this.config["runtime"].replaceAll("_", " ")
     }
   },
 
   watch: {
-    config(value) {
-      this.u_runtime = value["runtime"].replaceAll("_", " ")
+    config() {
+      this.update_state()
     }
   },
 }
