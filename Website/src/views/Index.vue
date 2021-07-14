@@ -35,7 +35,7 @@
             <span class="text-h6" @click="get_sponsor" style="cursor: pointer">{{ $t("index.description.list[4]") }}</span> <br>
             <div style="margin-top: 8px; font-size: 14px">
               <div class="yellow--text text--darken-3">
-                <b><span>Edison</span></b>
+                <b><span>Edisson</span></b>
               </div>
             </div>
           </div>

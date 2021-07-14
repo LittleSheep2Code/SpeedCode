@@ -1,7 +1,7 @@
 <template>
   <div>
     <v-footer padless fixed inset app class="justify-center pl-0" style="z-index: 100">
-      <v-card flat tile width="100%" class="secondary lighten-3">
+    <v-card flat tile width="100%" class="secondary lighten-3">
         <v-card-title>
           <v-tooltip right>
             <template v-slot:activator="{ on, attrs }">
@@ -21,7 +21,7 @@
 
           <v-tooltip left>
             <template v-slot:activator="{ on, attrs }">
-              <v-btn v-bind="attrs" v-on="on" @click="dialogs.application = true"
+              <v-btn v-bind="attrs" v-on="on" @click="dialogs.application = true" :disabled="config == null"
                      text>{{ u_runtime }} &nbsp; <v-icon color="green">mdi-play</v-icon></v-btn>
             </template>
             <span>{{ $t("editor.Toolbar.runtime") }}</span>
@@ -49,8 +49,8 @@
     </v-footer>
 
     <!--  Dialogs   -->
-    <SettingsDialog v-model="dialogs.settings" width="600px" @complete="setting_change"></SettingsDialog>
-    <RuntimeDialog v-model="dialogs.application" width="600px" @save="$emit('save')" ref="runtime"></RuntimeDialog>
+    <SettingsDialog v-model="dialogs.settings" :config="config" width="600px" @complete="setting_change"></SettingsDialog>
+    <RuntimeDialog v-model="dialogs.application" :config="config" :content="source" width="600px" @save="$emit('save')" ref="runtime"></RuntimeDialog>
   </div>
 </template>
 
@@ -71,6 +71,11 @@ export default {
       application: false
     }
   }),
+
+  props: {
+    config: Object,
+    source: String
+  },
 
   created() {
     window.addEventListener('keydown', (event) => {
@@ -95,16 +100,7 @@ export default {
     },
 
     setting_change($event) {
-      this.configure_loader()
       this.$emit("reload", $event)
-    },
-
-    configure_loader() {
-      let config = this.$cookies.get("editor-config")
-
-      if(config != null) {
-        this.u_runtime = config.runtime.replaceAll("_", " ")
-      }
     },
 
     update_save_state(state) {
@@ -112,9 +108,11 @@ export default {
     }
   },
 
-  mounted() {
-    this.configure_loader()
-  }
+  watch: {
+    config(value) {
+      this.u_runtime = value["runtime"].replaceAll("_", " ")
+    }
+  },
 }
 </script>
 

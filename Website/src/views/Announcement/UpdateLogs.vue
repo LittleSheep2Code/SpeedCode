@@ -12,6 +12,19 @@
             <div style="margin-top: 30px">
               <div>
                 <div class="h3" style="margin-bottom: 8px; width: 100%">
+                  <span class="text-left">SpeedCode v2.1.4</span>
+                  <b class="text-right float-right">Bigger Update!</b>
+                </div>
+                <v-divider></v-divider>
+
+                <div style="padding-left: 5px; font-size: 16px; margin-top: 8px">
+                  <span>+ &nbsp; <b>Support simultaneous editing of multiple files</b></span> <br>
+                </div>
+              </div>
+
+
+              <div class="next">
+                <div class="h3" style="margin-bottom: 8px; width: 100%">
                   <span class="text-left">SpeedCode v2.0.3</span>
                 </div>
                 <v-divider></v-divider>
@@ -59,11 +72,10 @@
                 </div>
               </div>
             </div>
-          </v-card-text>
+         </v-card-text>
         </v-card>
-      </v-col>
+     </v-col>
     </v-row>
-
     <Footers></Footers>
   </v-container>
 </template>

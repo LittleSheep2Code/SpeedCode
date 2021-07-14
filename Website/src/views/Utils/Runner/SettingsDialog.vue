@@ -9,22 +9,22 @@
         <div style="margin-top: 30px">
           <h3 class="config-title">{{ $t("editor.Settings.editor") }}</h3>
 
-          <div>
+         <div>
             <h4 class="config-subtitle">{{ $t("editor.Settings.Editor.language") }}</h4>
-            <v-select dense outlined v-model="config.settings.language" :items="config.data.available_language" return-object single-line
+            <v-select dense outlined v-model="bconfig.language" :items="gconfig.data.available_language" return-object single-line
                       @change="config.settings.runtime = translator.go(config.settings.language.abbr)"
-                      item-text="state" item-value="abbr"></v-select>
+                      item-text="state" item-value="abbr" :disabled="this.bconfig.language == null"></v-select>
           </div>
 
           <div>
             <h4 class="config-subtitle">{{ $t("editor.Settings.Editor.theme") }}</h4>
-            <v-select dense outlined v-model="config.settings.theme" :items="config.data.available_theme" return-object single-line
+            <v-select dense outlined v-model="gconfig.settings.theme" :items="gconfig.data.available_theme" return-object single-line
                       item-text="state" item-value="abbr"></v-select>
           </div>
 
           <div>
             <h4 class="config-subtitle">{{ $t("editor.Settings.Editor.tabsize") }}</h4>
-            <v-text-field type="number" validate-on-blur :rules="[value => value >= 0 || 'Minimum is 0']" dense outlined v-model="config.settings.tabsize"
+            <v-text-field type="number" validate-on-blur :rules="[value => value >= 0 || 'Minimum is 0']" dense outlined v-model="gconfig.settings.tabsize"
                           @change="verify"></v-text-field>
           </div>
         </div>
@@ -34,8 +34,8 @@
 
           <div>
             <h4 class="config-subtitle">{{ $t("editor.Settings.Runtime.environment") }}</h4>
-            <v-select dense outlined v-model="config.settings.runtime" :items="config.data.available_runtime" return-object single-line
-                      item-text="state" item-value="abbr"></v-select>
+            <v-select dense outlined v-model="bconfig.runtime" :items="gconfig.data.available_runtime" return-object single-line
+                      item-text="state" item-value="abbr" :disabled="this.bconfig.runtime == null"></v-select>
           </div>
         </div>
 
@@ -44,7 +44,7 @@
 
           <div>
             <h4 class="config-subtitle">{{ $t("editor.Settings.Autosave.delay") }}</h4>
-            <v-text-field type="number" validate-on-blur :rules="[value => value >= 0 || 'Minimum is 0']" dense outlined v-model="config.settings.autosave_delay"
+            <v-text-field type="number" validate-on-blur :rules="[value => value >= 0 || 'Minimum is 0']" dense outlined v-model="gconfig.settings.autosave_delay"
                           @change="verify"></v-text-field>
           </div>
         </div>
@@ -73,10 +73,8 @@ export default {
   data: () => ({
     translator: Translator,
     display: false,
-    config: {
+    gconfig: {
       settings: {
-        language: "javascript",
-        runtime: "NODE_JS",
         theme: "idea",
         tabsize: 2,
         autosave_delay: 10000
@@ -87,40 +85,30 @@ export default {
           { state: 'Light Idea(Default)', abbr: 'idea' }
         ],
 
-        available_language: [
-          { state: 'Javascript', abbr: 'javascript' },
-          { state: 'Python', abbr: 'x-python' },
-          { state: 'C++', abbr: 'x-csrc' },
-          { state: 'C', abbr: 'x-c++rc' },
-          { state: 'C#', abbr: 'x-csharp' }
-        ],
-
-        available_runtime: [
-          { state: 'NodeJS/Javascript', abbr: 'NODE_JS' },
-          { state: 'Python 2', abbr: 'PYTHON_2' },
-          { state: 'Python 3', abbr: 'PYTHON_3' },
-          { state: 'C GCC 7', abbr: 'C_GCC_7' },
-          { state: 'C GCC 8', abbr: 'C_GCC_8' },
-          { state: 'C GCC 9', abbr: 'C_GCC_9' },
-          { state: 'C Clang 7', abbr: 'C_CLANG_7' },
-          { state: 'C++ G++ 7', abbr: 'CPP_GPP_7' },
-          { state: 'C++ G++ 8', abbr: 'CPP_GPP_8' },
-          { state: 'C++ G++ 9', abbr: 'CPP_GPP_9' },
-          { state: 'C++ Clang 7', abbr: 'C_CLANG_7' },
-          { state: 'C#', abbr: 'C_SHARP' },
-        ]
+        available_language: Translator.Languages,
+        available_runtime: Translator.Runtimes
       }
+    },
+
+    bconfig: {
+      language: null,
+      runtime: null
     }
   }),
 
   props: {
     value: Boolean,
-    width: String
+    width: String,
+    config: Object
   },
 
   watch: {
     value() {
       this.display = this.value
+    },
+
+    config() {
+      this.bconfig = this.config
     }
   },
 
@@ -129,7 +117,7 @@ export default {
       let config = this.$cookies.get("editor-config")
 
       if(config != null) {
-        this.config.settings = config
+        this.gconfig.settings = config
       }
     },
 
@@ -142,17 +130,17 @@ export default {
     },
 
     update_data() {
-      if(this.config.settings.runtime.abbr != null)
-        this.config.settings.runtime = this.config.settings.runtime.abbr
+      if(this.bconfig.runtime.abbr != null)
+        this.bconfig.runtime = this.config.runtime.abbr
 
-      if(this.config.settings.language.abbr != null)
-        this.config.settings.language = this.config.settings.language.abbr
+      if(this.config.language.abbr != null)
+        this.config.language = this.config.language.abbr
 
       if(this.config.settings.theme.abbr != null)
         this.config.settings.theme = this.config.settings.theme.abbr
 
       this.$cookies.set("editor-config", this.config.settings)
-      this.$emit("complete")
+      this.$emit("complete", this.bconfig)
     },
 
     update_v_model($event) {
@@ -177,11 +165,11 @@ export default {
           }
 
           this.$cookies.remove("editor-config")
-          this.$emit("completed")
+          this.$emit("complete")
         }
       })
     }
-  },
+  }
 }
 </script>
 
