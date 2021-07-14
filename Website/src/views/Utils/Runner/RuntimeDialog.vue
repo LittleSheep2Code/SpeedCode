@@ -84,7 +84,7 @@ export default {
         this.execute_script()
       }
 
-      if(event.key === "F6" && this.result_content != null) {
+      if(event.key === "F6" && this.result_content != null && this.config != null) {
         this.result = true
       }
     })
@@ -92,7 +92,9 @@ export default {
 
   props: {
     value: Boolean,
-    width: String
+    width: String,
+    config: Object,
+    content: String
   },
 
   watch: {
@@ -104,14 +106,11 @@ export default {
   methods: {
     execute_script() {
 
-      // Save editor code
-      this.$emit("save")
-
       // Create the from data
       let data = new FormData()
 
       // Code is null warning
-      if(this.$cookies.get("editor-code") == null) {
+      if(this.content == null) {
         this.$dialog.notify.warning(i18n.t("editor.Runtime.null-code"), {
           position: "top-right",
           timeout: 3000
@@ -121,12 +120,12 @@ export default {
       }
 
       // Default Runtime
-      if(this.$cookies.get("editor-config")["runtime"] == null)
+      if(this.config["runtime"] == null)
         data.set("language", "CPP_GPP_9")
 
       // Set data to from data object
-      data.set("source", this.$cookies.get("editor-code"))
-      data.set("language", this.$cookies.get("editor-config")["runtime"])
+      data.set("source", this.content)
+      data.set("language", this.config["runtime"])
       data.set("stdin", this.runtime_config.stdin)
 
       this.wait = true
