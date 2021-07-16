@@ -1,3 +1,4 @@
+import uuid
 from datetime import datetime
 from flask import Blueprint, request
 
@@ -7,52 +8,51 @@ from models.connection_factory import database
 
 cloud_disks = Blueprint("cloud_disks", __name__, url_prefix="/cloud-disks")
 
+# Upload a code state
 @cloud_disks.post("/commit")
-@access_require(permission_require=5)               # EAS(赞助者) 权限需要
-def commit_code_file():
-
-        if request.form.get("file") is None or request.form.get("address") is None:
-            return {
+@access_require(permission_require=5)  # Sponsor permission require
+def commit_code_state():
+    if request.form.get("state") is None:
+        return {
                    "status": "request denied",
                    "status_code": "REQDID",
                    "reason": "cannot load payload",
                    "reason_code": "PAYERR"
                }, 400
 
-        file_owner = Account.query.filter_by(access_token=request.headers.get("access_token")).first()
+    file_owner = Account.query.filter_by(access_token=request.headers.get("access_token")).first()
 
-        file_object = CloudSource.query.filter_by(address=request.form.get("address")).first()
-
-        # 判断该路径是否占用
-        if file_object is not None:
-            return {
-                "status": "Upload failed",
-                "status_code": "FAILED",
-                "reason": "duplicate file address",
-                "reason_code": "REPEAT"
-            }
-
-        # 创建对象准备上传
-        file_object = CloudSource()
-        file_object.create_date = datetime.now()
-        file_object.owner = file_owner.uuid
-        file_object.content = request.form.get("file")
-        file_object.address = request.form.get("address")
-
-        database.session.add(file_object)
-        database.session.commit()
-
+    # 用户保存历史数量是否达到上限
+    if len(CloudSource.query.filter_by(owner=file_owner.uuid).all()) > 5:
         return {
-            "status": "Your file was committed",
-            "status_code": "PASSED",
-            "information": request.form.get("address")
+            "status": "Upload failed",
+            "status_code": "FAILED",
+            "reason": "history amount is more then 5",
+            "reason_code": "DATLOT"
         }
 
-@cloud_disks.post("/download")
-@access_require(permission_require=5)
-def download_code_file():
+    # 创建对象准备上传
+    file_object = CloudSource()
+    file_object.update_date = datetime.now()
+    file_object.owner = file_owner.uuid
+    file_object.index = str(uuid.uuid4())
+    file_object.state_content = request.form.get("state")
 
-    if request.form.get("address") is None:
+    database.session.add(file_object)
+    database.session.commit()
+
+    return {
+        "status": "Your file was committed",
+        "status_code": "PASSED",
+        "information": file_object.id
+    }
+
+
+# Download your code state
+@cloud_disks.post("/")
+@access_require(permission_require=5)
+def download_code_state():
+    if request.form.get("index") is None:
         return {
                    "status": "request denied",
                    "status_code": "REQDID",
@@ -60,4 +60,85 @@ def download_code_file():
                    "reason_code": "PAYERR"
                }, 400
 
-    file_object = CloudSource.query.filter_by(address=request.form.get("address")).first()
+    file_object = CloudSource.query.filter_by(index=request.form.get("index")).first()
+
+    if file_object is None:
+        return {
+                   "reason": "cannot found target state",
+                   "reason_code": "UNDFID"
+               }, 400
+
+    return {
+        "status": "downloaded",
+        "status_code": "PASSED",
+        "information": file_object.state_content
+    }
+
+
+# List your all code state
+@cloud_disks.post("/list")
+@access_require(permission_require=5)
+def download_code_state_history():
+    file_owner = Account.query.filter_by(access_token=request.headers.get("access_token")).first()
+    files = CloudSource.query.filter_by(owner=file_owner.uuid).all()
+
+    return {
+        "status": "downloaded",
+        "status_code": "PASSED",
+        "information": files
+    }
+
+
+# Remove(Delete) a code state
+@cloud_disks.post("/remove")
+@access_require(permission_require=5)
+def remove_code_state():
+    if request.form.get("index") is None:
+        return {
+                   "status": "request denied",
+                   "status_code": "REQDID",
+                   "reason": "cannot load payload",
+                   "reason_code": "PAYERR"
+               }, 400
+
+    file_object = CloudSource.query.filter_by(index=request.form.get("index")).first()
+
+    if file_object is None:
+        return {
+                   "reason": "cannot found target state",
+                   "reason_code": "UNDFID"
+               }, 400
+
+    database.session.remove(file_object)
+    database.session.commit()
+
+    return {
+        "status": "removed",
+        "status_code": "PASSED",
+        "information": ""
+    }
+
+
+# Merge(Update) local code state to cloud code state
+@cloud_disks.post("/merge")
+@access_require(permission_require=5)
+def merge_code_state():
+    if request.form.get("index") is None or request.form.get("state") is None:
+        return {
+                   "status": "request denied",
+                   "status_code": "REQDID",
+                   "reason": "cannot load payload",
+                   "reason_code": "PAYERR"
+               }, 400
+
+    file_object = CloudSource.query.filter_by(index=request.form.get("index")).first()
+
+    if file_object is None:
+        return {
+                   "reason": "cannot found target state",
+                   "reason_code": "UNDFID"
+               }, 400
+
+    CloudSource.query.filter_by(index=request.form.get("index")).update({"state_content": request.form.get("state")})
+
+

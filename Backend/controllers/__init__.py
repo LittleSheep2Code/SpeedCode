@@ -14,7 +14,8 @@ class controller_manager:
 
         account_add_delete,
         high_authorization,
-        activate_utils
+        activate_utils,
+        cloud_disks
     ]
 
     def __init__(self, application_instance):
