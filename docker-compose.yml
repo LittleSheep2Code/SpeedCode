@@ -1,0 +1,23 @@
+version: "2.2"
+
+services:
+  backend:
+    build: Backend
+    networks:
+      - apis
+    expose:
+      - "20020"
+    ports:
+      - "20020:20020"
+
+  view:
+    build: Website
+    networks:
+      - apis
+    expose:
+      - "80"
+    ports:
+      - "20021:80"
+
+networks:
+  apis:
