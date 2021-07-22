@@ -2,6 +2,7 @@ version: "2.2"
 
 services:
   backend:
+    restart: always
     build: Backend
     networks:
       - apis
@@ -11,6 +12,7 @@ services:
       - "20020:20020"
 
   view:
+    restart: always
     build: Website
     networks:
       - apis
