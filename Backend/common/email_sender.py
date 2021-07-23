@@ -2,7 +2,7 @@ import datetime
 
 from requests import post
 
-from enctryption_config import EMAIL_API_KEYS
+from encryption_config import EMAIL_API_KEYS
 from common.global_value_manage import global_values
 from scheduler import scheduler
 

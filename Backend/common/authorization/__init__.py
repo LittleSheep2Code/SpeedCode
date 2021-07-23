@@ -20,21 +20,19 @@ def access_require(permission_require=-256, permission_maximum=None, state_requi
             # 检查 AccessToken 是否为空
             if access_token is None:
                 return {
-                   "status": "connection refused",
-                   "reason": "please provide a correct access_token",
-                   "status_code": "CONREF",
-                   "reason_code": "UNDFID"
-                }, 400
+                   "status": "Rejected",
+                   "reason": "Please provide a correct access_token",
+                   "status_code": "433",
+                }, 403
 
             # 获取用户实例
             entity = Account.query.filter_by(access_token=access_token).first()
             if entity is None:
                 return {
-                    "status": "connection refused",
-                    "reason": "please provide a correct access_token",
-                    "status_code": "CONREF",
-                    "reason_code": "UNDFID"
-                }, 400
+                    "status": "Rejected",
+                    "reason": "Please provide a correct access_token",
+                    "status_code": "433",
+                }, 403
 
             if entity.state >= state_require and (state_maximum is None or entity.state < state_maximum):
                 if entity.permission >= permission_require and (permission_maximum is None or (admin_ignore and entity.permission >= 155) or (not admin_ignore and entity.permission > permission_maximum)):
@@ -44,11 +42,11 @@ def access_require(permission_require=-256, permission_maximum=None, state_requi
 
 
             return {
-               "status": "connection refused",
-               "reason": "permission denied or exceed the maximum",
-               "status_code": "CONREF",
-               "reason_code": "PERDID"
-            }, 400
+               "status": "Rejected",
+               "reason": "Permission denied or exceed the maximum",
+               "status_code": "433",
+               "ultra_code": "ml"
+            }, 403
 
         return wrapper
     return decorator

@@ -37,7 +37,6 @@ def authorization():
                "SpeedCode email verify")
 
     return {
-        "status": "completed authorization. please view your mailbox",
-        "information": "done",
-        "status_code": "PASSED"
+        "status": "OK",
+        "status_code": "200"
     }

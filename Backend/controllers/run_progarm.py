@@ -14,31 +14,29 @@ def run_program():
 
     if source is None or language is None:
         return {
-                   "status": "request denied",
-                   "status_code": "REQDID",
-                   "reason": "cannot load payload",
-                   "reason_code": "PAYERR"
+                   "status": "Rejected",
+                   "status_code": "401",
+                   "reason": "Cannot load payload",
                }, 400
 
     if program_runner.available_language[language] is None:
         return {
-                   "status": "request denied",
-                   "status_code": "REQDID",
-                   "reason": "cannot found require language",
-                   "reason_code": "WRODAT"
+                   "status": "Rejected",
+                   "status_code": "401",
+                   "reason": "Cannot found require language",
                }, 400
 
     # 创建执行请求
 
     if stdin is None:
-        information = program_runner.commit_submission(source, request.remote_addr, program_runner.available_language[language])
+        result = program_runner.commit_submission(source, request.remote_addr, program_runner.available_language[language])
 
     else:
-        information = program_runner.commit_submission(source, request.remote_addr, program_runner.available_language[language], stdin)
+        result = program_runner.commit_submission(source, request.remote_addr, program_runner.available_language[language], stdin)
 
     return {
         "status": "completed",
-        "information": dict(information),
+        "return": dict(result),
         "status_code": "PASSED"
     }
 
@@ -49,10 +47,9 @@ def list_history():
 
     if objective is None:
         return {
-                   "status": "request denied",
-                   "status_code": "REQDID",
-                   "reason": "cannot load payload",
-                   "reason_code": "PAYERR"
+                   "status": "Rejected",
+                   "status_code": "401",
+                   "reason": "Cannot load payload",
                }, 400
 
     history_list = Execute.query.filter_by(sender=objective).all()
@@ -61,7 +58,7 @@ def list_history():
         history_list[i] = utils.object_as_dict(history_list[i])
 
     return {
-        "status": "completed",
-        "information": history_list,
-        "status_code": "PASSED"
+        "status": "OK",
+        "return": history_list,
+        "status_code": "200"
     }

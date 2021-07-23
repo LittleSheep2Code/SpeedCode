@@ -14,10 +14,9 @@ cloud_disks = Blueprint("cloud_disks", __name__, url_prefix="/cloud-disks")
 def commit_code_state():
     if request.form.get("state") is None:
         return {
-                   "status": "request denied",
-                   "status_code": "REQDID",
-                   "reason": "cannot load payload",
-                   "reason_code": "PAYERR"
+                   "status": "Rejected",
+                   "status_code": "401",
+                   "reason": "Cannot load payload",
                }, 400
 
     file_owner = Account.query.filter_by(access_token=request.headers.get("access_token")).first()
@@ -26,9 +25,8 @@ def commit_code_state():
     if len(CloudSource.query.filter_by(owner=file_owner.uuid).all()) > 5:
         return {
             "status": "Upload failed",
-            "status_code": "FAILED",
-            "reason": "history amount is more then 5",
-            "reason_code": "DATLOT"
+            "status_code": "410",
+            "reason": "History amount is more then 5",
         }
 
     # 创建对象准备上传
@@ -42,9 +40,9 @@ def commit_code_state():
     database.session.commit()
 
     return {
-        "status": "Your file was committed",
-        "status_code": "PASSED",
-        "information": file_object.id
+        "status": "OK",
+        "status_code": "200",
+        "return": file_object.id
     }
 
 
@@ -54,24 +52,23 @@ def commit_code_state():
 def download_code_state():
     if request.form.get("index") is None:
         return {
-                   "status": "request denied",
-                   "status_code": "REQDID",
-                   "reason": "cannot load payload",
-                   "reason_code": "PAYERR"
+                   "status": "Rejected",
+                   "status_code": "401",
+                   "reason": "Cannot load payload",
                }, 400
 
     file_object = CloudSource.query.filter_by(index=request.form.get("index")).first()
 
     if file_object is None:
         return {
-                   "reason": "cannot found target state",
-                   "reason_code": "UNDFID"
+                   "status": "Error",
+                   "status_code": "404"
                }, 400
 
     return {
-        "status": "downloaded",
-        "status_code": "PASSED",
-        "information": file_object.state_content
+        "status": "OK",
+        "status_code": "200",
+        "return": file_object.state_content
     }
 
 
@@ -83,9 +80,9 @@ def download_code_state_history():
     files = CloudSource.query.filter_by(owner=file_owner.uuid).all()
 
     return {
-        "status": "downloaded",
-        "status_code": "PASSED",
-        "information": files
+        "status": "OK",
+        "status_code": "200",
+        "return": files
     }
 
 
@@ -95,27 +92,25 @@ def download_code_state_history():
 def remove_code_state():
     if request.form.get("index") is None:
         return {
-                   "status": "request denied",
-                   "status_code": "REQDID",
-                   "reason": "cannot load payload",
-                   "reason_code": "PAYERR"
+                   "status": "Rejected",
+                   "status_code": "401",
+                   "reason": "Cannot load payload",
                }, 400
 
     file_object = CloudSource.query.filter_by(index=request.form.get("index")).first()
 
     if file_object is None:
         return {
-                   "reason": "cannot found target state",
-                   "reason_code": "UNDFID"
+                   "status": "Error",
+                   "status_code": "404"
                }, 400
 
     database.session.remove(file_object)
     database.session.commit()
 
     return {
-        "status": "removed",
-        "status_code": "PASSED",
-        "information": ""
+        "status": "OK",
+        "status_code": "200",
     }
 
 
@@ -125,18 +120,17 @@ def remove_code_state():
 def merge_code_state():
     if request.form.get("index") is None or request.form.get("state") is None:
         return {
-                   "status": "request denied",
-                   "status_code": "REQDID",
+                   "status": "Rejected",
+                   "status_code": "401",
                    "reason": "cannot load payload",
-                   "reason_code": "PAYERR"
                }, 400
 
     file_object = CloudSource.query.filter_by(index=request.form.get("index")).first()
 
     if file_object is None:
         return {
-                   "reason": "cannot found target state",
-                   "reason_code": "UNDFID"
+                   "status": "Error",
+                   "status_code": "404"
                }, 400
 
     CloudSource.query.filter_by(index=request.form.get("index")).update({"state_content": request.form.get("state")})

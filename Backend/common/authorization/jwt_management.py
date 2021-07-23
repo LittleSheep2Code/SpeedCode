@@ -1,5 +1,5 @@
+import datetime
 import hashlib
-import time
 
 import jwt
 
@@ -10,7 +10,7 @@ from models.connection_factory import database
 def summon_new_access_token(instance: Account):
 
     # Summon new access token
-    payload = dict(exp=time.time() + 172800)
+    payload = dict(exp=datetime.datetime.utcnow() + datetime.timedelta(days=7), flag=1, iss="speedcode", iat=datetime.datetime.utcnow())
     payload.update({"uuid": instance.uuid, "username": instance.username})
 
     access = jwt.encode(payload=payload, key=instance.password, algorithm="HS256")
@@ -22,27 +22,28 @@ def summon_new_access_token(instance: Account):
     # Return
     return access
 
-def verify_access_token(access: str, entity_data):
-    data = {}
-
-    # Decode access token and verify
+def decode_exists_access_token(access: str, key: str):
     try:
-        data = jwt.decode(jwt=access, key=entity_data.password, algorithms='HS256')
+        payload = jwt.decode(access, key=key, algorithms="HS256")
 
-    # Access token wrong or timeout
-    except Exception as e:
-        return False
+    except (jwt.ExpiredSignatureError, jwt.InvalidTokenError, jwt.InvalidSignatureError):
+        return ""
 
-    # Access token is right
-    finally:
-        if (entity_data.uuid is None or data.get("uuid") == entity_data.uuid) and Account.query.filter_by(uuid=data.get("uuid")).first() is not None:
+    else:
+        return payload
 
-            entity = Account.query.filter_by(uuid=data.get("uuid")).first()
+def check_exists_access_token(access: str, entity_data):
 
-            if entity.access_token != access:
-                return False
+    if access:
+        payload = decode_exists_access_token(access, entity_data.password)
 
-        return True
+        if not payload:
+            return False
+
+        if "username" in payload and "uuid" in payload:
+            return True
+
+    return False
 
 
 def password_process(source: str):

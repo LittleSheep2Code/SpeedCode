@@ -1,0 +1,14 @@
+{
+	"folders": [
+		{
+			"path": "Website"
+		},
+		{
+			"path": "Backend"
+		}
+	],
+	"settings": {
+		"typescript.tsdk": "node_modules/typescript/lib",
+		"vetur.experimental.templateInterpolationService": true
+	}
+}

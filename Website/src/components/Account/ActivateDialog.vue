@@ -62,14 +62,14 @@ export default {
 
       this.axios.post("/s-code/account/activate", data, { headers: { "access_token": access } }).then(response => {
 
-        if(response.data["status_code"] === "WRODAT") {
+        if(response.data["status_code"] === "400") {
           this.$dialog.notify.warning(i18n.t("user-management.Activate.messages.wrong-activate"), {
             position: "top-right",
             timeout: 3000
           })
         }
 
-        if(response.data["status_code"] === "PASSED") {
+        if(response.data["status_code"] === "200") {
           this.$dialog.notify.info(i18n.t("user-management.Activate.messages.completed"), {
             position: "top-right",
             timeout: 3000

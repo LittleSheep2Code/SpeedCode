@@ -5,7 +5,6 @@ from controllers.run_progarm import program_executor
 from controllers.accounts import *
 
 class controller_manager:
-
     controllers = [
         connection_checker,
         console,
@@ -16,6 +15,7 @@ class controller_manager:
         high_authorization,
         activate_utils,
         cloud_disks
+
     ]
 
     def __init__(self, application_instance):

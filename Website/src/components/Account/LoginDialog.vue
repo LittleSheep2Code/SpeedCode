@@ -74,20 +74,20 @@ export default {
         data.set("password", this.form.password)
 
         this.axios.post("/s-code/account/sign-in", data).then(response => {
-          if(response.status === 200 && response.data["status_code"] === "PASSED") {
+          if(response.status === 200 && response.data["status_code"] === "200") {
             this.$dialog.notify.info(i18n.t("user-management.Login.messages.completed"), {
               position: "top-right",
               timeout: 3000
             })
 
-            this.$cookies.set("access", response.data["information"])
+            this.$cookies.set("access", response.data["return"])
 
             this.form.wait = false
             this.$emit("input", false)
             this.$emit("complete")
           }
 
-          else if(response.data["reason_code"] === "WRODAT") {
+          else if(response.data["reason_code"] === "400") {
             this.$dialog.notify.warning(i18n.t("user-management.Login.messages.wrong-data"), {
               position: "top-right",
               timeout: 3000

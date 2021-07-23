@@ -61,7 +61,7 @@
 
               <v-stepper-content step="3">
                 <v-row>
-                  <v-col cols="12" class="text-center"><div v-html="$t('user-manage.dialogs.res.register.completed')"></div></v-col>
+                  <v-col cols="12" class="text-center"><div v-html="$t('user-manage.dialogs.res.Register.completed')"></div></v-col>
 
                   <v-col cols="12" class="text-center">
                     <v-btn color="primary" text @click="step = 1" :loading="form.wait">{{ $t("normal.actions.again") }}</v-btn>
@@ -122,33 +122,29 @@ export default {
 
         this.axios.post("/s-code/account/sign-up", data).then(response => {
 
-          if(response.data["reason_code"] != null && response.data["reason_code"].startsWith("REPEAT")) {
-
-            if(response.data["reason_code"].endsWith("NAME")) {
-              this.$dialog.notify.warning(i18n.t("user-management.Register.messages.repeat-username"), {
-                position: "top-right",
-                timeout: 3000
-              })
-            }
-
-            if(response.data["reason_code"].endsWith("EMAIL")) {
-              this.$dialog.notify.warning(i18n.t("user-management.Register.messages.repeat-email"), {
-                position: "top-right",
-                timeout: 3000
-              })
-            }
+          if(response.data["status_code"] === "403") {
+            this.$dialog.notify.warning(i18n.t("user-management.Register.messages.repeat-username"), {
+              position: "top-right",
+              timeout: 3000
+            })
           }
 
-          if(response.data["reason_code"] != null && response.data["reason_code"].startsWith("WRODAT")) {
+          if(response.data["status_code"] === "410") {
+            this.$dialog.notify.warning(i18n.t("user-management.Register.messages.repeat-email"), {
+              position: "top-right",
+              timeout: 3000
+            })
+          }
 
-            if(response.data["reason_code"].endsWith("NAME")) {
+          if(response.data["status_code"] === "400") {
+            if(response.data["ultra_code"] === "iu") {
               this.$dialog.notify.warning(i18n.t("user-management.Register.messages.wrong-username"), {
                 position: "top-right",
                 timeout: 3000
               })
             }
 
-            if(response.data["reason_code"].endsWith("EMAIL")) {
+            if(response.data["ultra_code"] === "ie") {
               this.$dialog.notify.warning(i18n.t("user-management.Register.messages.wrong-email"), {
                 position: "top-right",
                 timeout: 3000
@@ -156,7 +152,7 @@ export default {
             }
           }
 
-          if(response.data["status_code"] === "PASSED") {
+          if(response.data["status_code"] === "200") {
             this.step++
           }
 
@@ -179,14 +175,14 @@ export default {
 
       this.axios.post("/s-code/account/sign-up", data).then(response => {
 
-        if(response.data["status_code"] === "WRODAT") {
+        if(response.data["status_code"] === "400") {
           this.$dialog.notify.warning(i18n.t("user-management.Register.messages.wrong-email-code"), {
             position: "top-right",
             timeout: 3000
           })
         }
 
-        if(response.data["status_code"] === "PASSED") {
+        if(response.data["status_code"] === "200") {
           this.step++
         }
 

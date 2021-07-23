@@ -21,10 +21,9 @@ def sign_in():
 
     if username is None or password is None:
         return {
-                   "status": "request denied",
-                   "status_code": "REQDID",
-                   "reason": "cannot load payload",
-                   "reason_code": "PAYERR"
+                   "status": "Rejected",
+                   "status_code": "401",
+                   "reason": "Cannot load payload",
                }, 400
 
     p_password = password_process(password)
@@ -43,30 +42,29 @@ def sign_in():
     # 无法从数据库读取到目标用户
     if entity is None or entity.password != p_password:
         return {
-                   "status": "sign in failed",
-                   "status_code": "FAILED",
-                   "reason": "wrong data",
-                   "reason_code": "WRODAT"
+                   "status": "Error",
+                   "status_code": "400",
+                   "reason": "Wrong data",
                }, 201
 
     # 登陆成功
     # 更新 AccessToken
-    if not verify_access_token(entity.access_token, entity) or entity.access_token == "" or entity.access_token is None:
+    if not check_exists_access_token(entity.access_token, entity) or entity.access_token == "" or entity.access_token is None:
 
         # 需要更新
         access = summon_new_access_token(entity)
 
         return {
-            "status": "sign in success, and update access code",
-            "information": access,
-            "status_code": "PASSED"
+            "status": "OK",
+            "return": access,
+            "status_code": "200"
         }
 
     # 返回 AccessToken 以及登陆成功
     return {
-        "status": "sign in success",
-        "information": entity.access_token,
-        "status_code": "PASSED"
+        "status": "OK",
+        "return": entity.access_token,
+        "status_code": "200"
     }
 
 
@@ -79,10 +77,9 @@ def register():
 
     if username is None or password is None or email is None:
         return {
-                   "status": "request denied",
-                   "status_code": "REQDID",
-                   "reason": "cannot load payload",
-                   "reason_code": "PAYERR"
+                   "status": "Rejected",
+                   "status_code": "401",
+                   "reason": "Cannot load payload",
                }, 400
 
     # 第一次请求
@@ -91,18 +88,18 @@ def register():
         # 注册条件
         if not re.match("^[a-zA-Z][a-zA-Z0-9_]{4,32}$", username):
             return {
-                "status": "request denied",
-                "status_code": "REQDID",
-                "reason": "illegal username, please use letters, number and underline characters",
-                "reason_code": "WRODAT-NAME"
+                "status": "Rejected",
+                "status_code": "400",
+                "ultra_code": "iu",
+                "reason": "Illegal username, please use letters, number and underline characters",
             }
 
         if not re.match("^([A-Za-z0-9_\-\.])+\@([A-Za-z0-9_\-\.])+\.([A-Za-z]{2,4})$", email):
             return {
-                "status": "request denied",
-                "status_code": "REQDID",
-                "reason": "illegal email, please check your email",
-                "reason_code": "WRODAT-NAME"
+                "status": "Rejected",
+                "status_code": "400",
+                "ultra_code": "ie",
+                "reason": "Illegal email, please check your email",
             }
 
         if Account.query.filter_by(username=username).first() is not None:
@@ -112,18 +109,16 @@ def register():
 
             else:
                 return {
-                    "status": "request denied",
-                    "status_code": "REQDID",
-                    "reason": "same username",
-                    "reason_code": "REPEAT-NAME"
+                    "status": "Rejected",
+                    "status_code": "403",
+                    "reason": "Same username",
                 }
 
         if len(Account.query.filter_by(email=email).all()) >= 2:
             return {
-                "status": "request denied",
-                "status_code": "REQDID",
-                "reason": "one email has more than two Account alert",
-                "reason_code": "REPEAT-EMAIL"
+                "status": "Rejected",
+                "status_code": "410",
+                "reason": "One email has more than two Account alert",
             }
 
         # 创建临时账户
@@ -146,9 +141,9 @@ def register():
                    "SpeedCode access request code")
 
         return {
-            "status": "completed sent verify mail. please view your mailbox",
-            "information": "done",
-            "status_code": "PASSED"
+            "status": "OK",
+            "ultra_code": "ag",
+            "status_code": "200"
         }
 
     # 第二次请求
@@ -157,8 +152,8 @@ def register():
         entity = Account.query.filter_by(username=username).first()
         if entity is None:
             return {
-                "status": "please send first request or verify your data",
-                "status_code": "WRODAT"
+                "status": "Error",
+                "status_code": "400"
             }
 
         if entity.mail_access_code == email_code:
@@ -167,13 +162,13 @@ def register():
             database.session.commit()
 
             return {
-                "status": "completed",
-                "status_code": "PASSED"
+                "status": "OK",
+                "status_code": "200"
             }
 
         return {
-            "status": "please verity your data",
-            "status_code": "WRODAT",
+            "status": "Error",
+            "status_code": "400",
         }
 
 @account_add_delete.get("/detail")
@@ -189,8 +184,8 @@ def get_account_detail():
 
         if entity.state <= 0:
             return {
-                "status": "completed",
-                "information": {
+                "status": "OK",
+                "return": {
                     "access_token": entity.access_token,
                     "destroy_date": entity.destroy_date,
                     "create_date": entity.create_date,
@@ -202,13 +197,13 @@ def get_account_detail():
                     "uuid": entity.uuid,
                 },
 
-                "status_code": "PASSED"
+                "status_code": "200"
             }
 
         else:
             return {
-                "status": "completed",
-                "information": {
+                "status": "OK",
+                "return": {
                     "access_token": entity.access_token,
                     "create_date": entity.create_date,
                     "permission": entity.permission,
@@ -219,15 +214,15 @@ def get_account_detail():
                     "uuid": entity.uuid,
                 },
 
-                "status_code": "PASSED"
+                "status_code": "200"
             }
 
     elif objective is not None and Account.query.filter_by(uuid=objective).first() is not None:
         entity = Account.query.filter_by(uuid=objective).first()
 
         return {
-            "status": "completed",
-            "information": {
+            "status": "OK",
+            "return": {
                 "create_date": entity.create_date,
                 "permission": entity.permission,
                 "username": entity.username,
@@ -236,14 +231,13 @@ def get_account_detail():
                 "uuid": entity.uuid,
             },
 
-            "status_code": "PASSED"
+            "status_code": "200"
         }
 
     return {
-        "status": "failed",
-        "status_code": "FAILED",
-        "reason": "cannot get objective user entity",
-        "reason_code": "WRODAT"
+        "status": "Error",
+        "status_code": "404",
+        "reason": "Cannot get objective user entity",
     }
 
 @account_add_delete.get("/avatar")
@@ -253,9 +247,9 @@ def get_account_avatar():
     entity = Account.query.filter_by(access_token=request.headers.get("access_token")).first()
     if entity.avatar is None:
         return {
-            "status": "completed",
-            "information": entity.username[0],
-            "status_code": "UNDFID"
+            "status": "OK",
+            "return": entity.username[0],
+            "status_code": "204"
         }
 
     else:
@@ -271,10 +265,9 @@ def set_account_avatar():
     image = request.files.get("file")
     if image is None:
         return {
-                   "status": "request denied",
-                   "status_code": "REQDID",
-                   "reason": "cannot load payload, require a image payload",
-                   "reason_code": "PAYERR"
+                   "status": "Rejected",
+                   "status_code": "401",
+                   "reason": "Cannot load payload, require a image payload",
                }, 400
 
     Account.query.filter_by(access_token=request.headers.get("access_token")).update({"avatar": image.stream})

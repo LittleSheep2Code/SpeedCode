@@ -12,20 +12,20 @@ activate_utils = Blueprint("activate_utils", __name__, url_prefix="/account/acti
 @access_require(state_require=0, state_maximum=1)
 def activate_account():
     activate_code = request.form.get("source")
-    activate_entity = Activate.query.filter_by(source=activate_code).first()
 
     if activate_code is None:
         return {
-                   "status": "request denied",
-                   "status_code": "REQDID",
-                   "reason": "cannot load payload",
-                   "reason_code": "PAYERR"
+                   "status": "Rejected",
+                   "status_code": "401",
+                   "reason": "Cannot load payload",
                }, 400
+
+    activate_entity = Activate.query.filter_by(source=activate_code).first()
 
     if activate_entity is None:
         return {
-            "status": "cannot found source activate code",
-            "status_code": "WRODAT"
+            "status": "Cannot found source activate code",
+            "status_code": "404"
         }
 
     Activate.query.filter_by(source=activate_code).update({"amount": activate_entity.amount - 1})
@@ -33,8 +33,8 @@ def activate_account():
     database.session.commit()
 
     return {
-        "status": "completed",
-        "status_code": "PASSED"
+        "status": "OK",
+        "status_code": "200"
     }
 
 @activate_utils.post("/add")
@@ -51,10 +51,9 @@ def add_activate_code():
 
     if activate_code is None and Activate.query.filter_by(source=activate_code).first() is not None:
         return {
-            "status": "request denied",
-            "status_code": "REQDID",
-            "reason": "same activate code",
-            "reason_code": "WRODAT"
+            "status": "Rejected",
+            "status_code": "401",
+            "reason": "Same activate code",
         }
 
     activate_entity = Activate(source=activate_code, amount=amount, create_date=datetime.now())
@@ -62,7 +61,7 @@ def add_activate_code():
     database.session.commit()
 
     return {
-        "status": "completed",
-        "information": activate_code,
-        "status_code": "PASSED"
+        "status": "OK",
+        "return": activate_code,
+        "status_code": "200"
     }

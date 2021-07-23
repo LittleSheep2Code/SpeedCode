@@ -132,7 +132,7 @@ export default {
       this.axios.post("/s-code/program-runner", data).then(response => {
         this.update_v_model(false)
 
-        if(response.data["status_code"] !== "PASSED") {
+        if(response.data["status_code"] !== "200") {
           this.$dialog.error({
             title: i18n.t("normal.status.failed"),
             text: `<code>${JSON.stringify(response.data)}</code>`,
@@ -142,7 +142,7 @@ export default {
         }
 
         else {
-          this.result_content = response.data['information']
+          this.result_content = response.data['return']
           this.result = true
         }
 

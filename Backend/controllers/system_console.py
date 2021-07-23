@@ -1,46 +1,44 @@
 from flask import Blueprint, request
 
-from enctryption_config import CONSOLE_KEY
+from encryption_config import CONSOLE_KEY
 from models.connection_factory import database
 
 console = Blueprint("console", __name__, url_prefix="/console")
 
-### ACCESS CONFIGURE ### DANGER ### ACCESS CONFIGURE ###
 final_code = CONSOLE_KEY
-### ACCESS CONFIGURE ### DANGER ### ACCESS CONFIGURE ###
 
-@console.route("/init")
+@console.put("/init")
 def init():
     if request.headers.get("final_access_code") != final_code:
         return {
-            "status": "failed",
-            "information": "wrong final access code",
-            "status_code": "PERDID"
+            "status": "Error",
+            "return": "Wrong final access code",
+            "status_code": "400"
         }
 
     else:
         database.create_all()
 
         return {
-            "status": "completed",
-            "information": "init completed",
-            "status_code": "PASSED"
+            "status": "OK",
+            "return": "Init completed",
+            "status_code": "200"
         }
 
-@console.route("/drop")
+@console.put("/drop")
 def drop():
     if request.headers.get("final_access_code") != final_code:
         return {
-            "status": "failed",
-            "information": "wrong final access code",
-            "status_code": "PERDID"
+            "status": "Exited",
+            "return": "Wrong final access code",
+            "status_code": "400"
         }
 
     else:
         database.drop_all()
 
         return {
-            "status": "completed",
-            "information": "drop completed",
-            "status_code": "PASSED"
+            "status": "OK",
+            "return": "Drop completed",
+            "status_code": "200"
         }

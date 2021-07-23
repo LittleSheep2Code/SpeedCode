@@ -6,7 +6,7 @@ from requests import post, get
 from datetime import datetime
 from enum import Enum
 
-from enctryption_config import JUDGE0_API
+from encryption_config import JUDGE0_API
 from models import Execute
 from models.connection_factory import database
 
